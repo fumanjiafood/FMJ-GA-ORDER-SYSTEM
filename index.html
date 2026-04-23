@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福满家 订单系统</title>
+<style>
+body { font-family: Arial; max-width:650px; margin:auto; padding:20px; background:#f9f9f9;}
+h2 { text-align:center; color:#8B0000;}
+h3 { background:#eee; padding:8px; border-left:4px solid #8B0000; margin-top:20px;}
+input, select { width:100%; padding:10px; margin:5px 0; box-sizing:border-box; border:1px solid #ddd; border-radius:5px;}
+.product { border-bottom:1px solid #eee; padding:12px 5px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
+.product-name { flex:2; font-weight:bold;}
+.product-price { flex:1; color:#666; font-size:14px;}
+.product-qty { flex:1; min-width:100px;}
+.product-qty input { width:80px; padding:8px; text-align:center;}
+button { width:100%; padding:12px; background:#8B0000; color:white; border:none; font-size:18px; cursor:pointer; border-radius:5px; margin-top:10px;}
+button:disabled { background:gray; cursor:not-allowed;}
+.total { background:#fff3e0; padding:15px; border-radius:8px; margin:15px 0;}
+.total-item { display:flex; justify-content:space-between; margin:8px 0;}
+.total-item b { font-size:20px; color:#8B0000;}
+.free-gift { background:#e8f5e9; padding:12px; border-radius:8px; margin:10px 0;}
+.free-gift h4 { margin:0 0 8px 0; color:#2e7d32;}
+</style>
+</head>
+<body>
+
+<h2>福满家 订单系统</h2>
+
+<h3>📋 客户资料</h3>
+<input id="name" placeholder="姓名 *">
+<input id="phone" placeholder="联络号码 *">
+<input id="address" placeholder="地址 *">
+
+<h3>🚚 配送方式</h3>
+<select id="delivery" onchange="calc()">
+  <option value="自取">自取</option>
+  <option value="邮寄">邮寄</option>
+</select>
+<p><b>自取地址：</b>9, Jalan Perdagangan 1, Taman Universiti, 81300, Skudai, Johor.</p >
+
+<!-- 生肉商品 -->
+<h3>🥩 生肉（附送Zip袋＋礼袋）</h3>
+<div id="rawProducts"></div>
+
+<!-- 熟肉商品 -->
+<h3>🍖 熟肉</h3>
+<div id="cookedProducts"></div>
+
+<!-- 包装材料 -->
+<h3>📦 包装材料</h3>
+<div id="packagingProducts"></div>
+
+<h3>📝 备注</h3>
+<input id="remark" placeholder="备注（可选）">
+
+<h3>🖼️ 上传付款截图 *</h3>
+<input type="file" id="payment" accept="image/*">
+
+<div class="total">
+    <div class="total-item">商品总计：RM <span id="productTotal">0</span></div>
+    <div class="total-item">运费：RM <span id="shipping">0</span></div>
+    <div class="total-item"><b>总计：RM <span id="total">0</span></b></div>
+</div>
+
+<!-- 附送礼品显示区 -->
+<div id="giftDisplay" class="free-gift" style="display:none;">
+    <h4>🎁 附送礼品：</h4>
+    <div id="giftContent"></div>
+</div>
+
+<button id="submitBtn">提交订单</button>
+
+<script>
+// ⚠️ 请替换成你最新的 Apps Script URL
+const API_URL = "https://script.google.com/macros/s/AKfycbz9957MQzjAyEtuwGgzAsfSaC9XpjsCzgSMw_cwrNRiuYwtdEwfn8OYeO_nXDtlSfNqjQ/exec";
+
+// ========== 商品数据 ==========
+// 生肉类（下单即附送 Zip袋+礼袋）
+const rawProducts = [
+  { name: "猪肉碎肉干（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
+  { name: "鸡肉碎肉干（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
+  { name: "切片肉干（附送各30pcs Zip袋＆礼袋）", price: 1100, unit: "Box/24Kg" },
+  { name: "帝王肉干（附送各20pcs Zip袋＆礼袋）", price: 1550, unit: "Box/20Kg" }
+];
+
+// 熟肉类
+const cookedProducts = [
+  { name: "猪肉碎肉干", price500: 41.5, price1kg: 83 },
+  { name: "鸡肉碎肉干", price500: 41.5, price1kg: 83 },
+  { name: "切片肉干", price500: 56.5, price1kg: 113 },
+  { name: "帝王肉干", price500: 79, price1kg: 158 },
+  { name: "精品肉松", price: 22, unit: "200G/Tin", isFixed: true },
+  { name: "黄金辣味虾米卷", price: 15, unit: "220G/Tin", isFixed: true },
+  { name: "炭烧鸡蛋饼", price: 22, unit: "340G/Tin", isFixed: true },
+  { name: "咸蛋鱼皮", price: 15, unit: "100G/Pkt", isFixed: true },
+  { name: "麻辣鱼皮", price: 15, unit: "100G/Pkt", isFixed: true }
+];
+
+// 包装材料类
+const packagingProducts = [
+  { name: "真空袋（肉碎）", price: 60, unit: "400pcs/Pkt" },
+  { name: "真空袋（培根）", price: 70, unit: "200pcs/Pkt" },
+  { name: "Zip袋", price: 1.2, unit: "pcs" },
+  { name: "礼袋", price: 1.7, unit: "pcs" },
+  { name: "布条（大）10'x20'", price: 70, unit: "pcs" },
+  { name: "布条（中）3'x10'", price: 35, unit: "pcs" },
+  { name: "布条（小）2'x6'", price: 17, unit: "pcs" }
+];
+
+// 渲染生肉商品
+function renderRawProducts() {
+  let html = "";
+  rawProducts.forEach((p, i) => {
+    html += `<div class="product">
+        <span class="product-name">${p.name}</span>
+        <span class="product-price">RM${p.price} / ${p.unit}</span>
+        <span class="product-qty"><input type="number" id="raw_${i}" value="0" min="0" onchange="calc()" step="1"></span>
+    </div>`;
+  });
+  document.getElementById("rawProducts").innerHTML = html;
+}
+
+// 渲染熟肉商品
+function renderCookedProducts() {
+  let html = "";
+  cookedProducts.forEach((p, i) => {
+    if (p.isFixed) {
+      html += `<div class="product">
+          <span class="product-name">${p.name}</span>
+          <span class="product-price">RM${p.price} / ${p.unit}</span>
+          <span class="product-qty"><input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1"></span>
+      </div>`;
+    } else {
+      html += `<div class="product">
+          <span class="product-name">${p.name}</span>
+          <span class="product-price">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
+          <span class="product-qty">
+            500G: <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()" style="width:60px;">
+            1KG: <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()" style="width:60px;">
+          </span>
+      </div>`;
+    }
+  });
+  document.getElementById("cookedProducts").innerHTML = html;
+}
+
+// 渲染包装材料
+function renderPackagingProducts() {
+  let html = "";
+  packagingProducts.forEach((p, i) => {
+    html += `<div class="product">
+        <span class="product-name">${p.name}</span>
+        <span class="product-price">RM${p.price} / ${p.unit}</span>
+        <span class="product-qty"><input type="number" id="pack_${i}" value="0" min="0" onchange="calc()" step="1"></span>
+    </div>`;
+  });
+  document.getElementById("packagingProducts").innerHTML = html;
+}
+
+// 计算附送礼品
+function calculateFreeGifts() {
+  let zipCount = 0;
+  let giftBagCount = 0;
+  
+  rawProducts.forEach((p, i) => {
+    let qty = parseInt(document.getElementById(`raw_${i}`)?.value) || 0;
+    if (qty > 0) {
+      if (p.name.includes("帝王肉干")) {
+        zipCount += qty * 20;
+        giftBagCount += qty * 20;
+      } else {
+        zipCount += qty * 30;
+        giftBagCount += qty * 30;
+      }
+    }
+  });
+  
+  if (zipCount > 0 || giftBagCount > 0) {
+    document.getElementById("giftDisplay").style.display = "block";
+    document.getElementById("giftContent").innerHTML = `🎁 附送 Zip袋 × ${zipCount} 个 &nbsp;&nbsp; 礼袋 × ${giftBagCount} 个`;
+  } else {
+    document.getElementById("giftDisplay").style.display = "block";
+    document.getElementById("giftContent").innerHTML = "📌 下单生肉商品即可获得附送Zip袋和礼袋";
+  }
+  
+  return { zipCount, giftBagCount };
+}
+
+// 计算总价和运费
+function calc() {
+  let total = 0;
+  let weight = 0;
+  
+  // 生肉计算
+  rawProducts.forEach((p, i) => {
+    let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
+    total += qty * p.price;
+    weight += qty * 24;
+  });
+  
+  // 熟肉计算
+  cookedProducts.forEach((p, i) => {
+    if (p.isFixed) {
+      let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
+      total += qty * p.price;
+      if (p.name.includes("肉松")) weight += qty * 0.2;
+      else if (p.name.includes("虾米卷")) weight += qty * 0.22;
+      else if (p.name.includes("鸡蛋饼")) weight += qty * 0.34;
+      else if (p.name.includes("鱼皮")) weight += qty * 0.1;
+    } else {
+      let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
+      let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
+      total += qty500 * p.price500;
+      total += qty1kg * p.price1kg;
+      weight += qty500 * 0.5;
+      weight += qty1kg * 1;
+    }
+  });
+  
+  // 包装材料计算
+  packagingProducts.forEach((p, i) => {
+    let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
+    total += qty * p.price;
+  });
+  
+  // 运费计算
+  let ship = 0;
+  let delivery = document.getElementById("delivery").value;
+  if (delivery === "邮寄") {
+    if (weight <= 1) ship = 10;
+    else if (weight <= 3) ship = 15;
+    else if (weight <= 5) ship = 20;
+    else ship = 20 + Math.ceil((weight - 5) / 1) * 5;
+  }
+  
+  document.getElementById("productTotal").innerText = total.toFixed(2);
+  document.getElementById("shipping").innerText = ship.toFixed(2);
+  document.getElementById("total").innerText = (total + ship).toFixed(2);
+  
+  calculateFreeGifts();
+}
+
+// 提交订单
+async function submitOrder() {
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
+  
+  if (!name || !phone || !address) {
+    alert("请填写完整资料");
+    return;
+  }
+  
+  let file = document.getElementById("payment").files[0];
+  if (!file) {
+    alert("必须上传付款截图");
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    alert("图片不能超过2MB");
+    return;
+  }
+  
+  let btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.innerText = "提交中...";
+  
+  let reader = new FileReader();
+  reader.onload = async function() {
+    // 收集订单商品
+    let orderProducts = [];
+    
+    rawProducts.forEach((p, i) => {
+      let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
+      if (qty > 0) orderProducts.push({ name: p.name, qty: qty, price: p.price });
+    });
+    
+    cookedProducts.forEach((p, i) => {
+      if (p.isFixed) {
+        let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
+        if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
+      } else {
+        let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
+        let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
+        if (qty500 > 0) orderProducts.push({ name: `${p.name} 500G`, qty: qty500, price: p.price500 });
+        if (qty1kg > 0) orderProducts.push({ name: `${p.name} 1KG`, qty: qty1kg, price: p.price1kg });
+      }
+    });
+    
+    packagingProducts.forEach((p, i) => {
+      let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
+      if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
+    });
+    
+    let giftInfo = calculateFreeGifts();
+    
+    try {
+      let res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          address: address,
+          delivery: document.getElementById("delivery").value,
+          remark: document.getElementById("remark").value,
+          products: orderProducts,
+          productTotal: document.getElementById("productTotal").innerText,
+          shippingFee: document.getElementById("shipping").innerText,
+          total: document.getElementById("total").innerText,
+          paymentImage: reader.result,
+          freeGifts: `Zip袋×${giftInfo.zipCount} 礼袋×${giftInfo.giftBagCount}`
+        })
+      });
+      
+      let data = await res.json();
+      
+      if (data.status === "success") {
+        document.body.innerHTML = `<div style="text-align:center;padding:50px;">
+          <h2>🎉 下单成功</h2>
+          <p>订单编号：<b>${data.orderId}</b></p >
+          <p>我们会尽快处理您的订单</p >
+          <p>请保留付款截图以备查询</p >
+          <hr>
+          <p style="color:#8B0000;">🎁 ${giftInfo.zipCount > 0 ? `附送 Zip袋×${giftInfo.zipCount} 礼袋×${giftInfo.giftBagCount}` : "感谢您的订购"}</p >
+        </div>`;
+      } else {
+        alert("提交失败：" + (data.message || "未知错误"));
+        btn.disabled = false;
+        btn.innerText = "提交订单";
+      }
+    } catch (err) {
+      alert("网络错误：" + err.message);
+      btn.disabled = false;
+      btn.innerText = "提交订单";
+    }
+  };
+  
+  reader.onerror = function() {
+    alert("读取图片失败");
+    btn.disabled = false;
+    btn.innerText = "提交订单";
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+// 绑定事件和初始化
+document.getElementById("submitBtn").onclick = submitOrder;
+renderRawProducts();
+renderCookedProducts();
+renderPackagingProducts();
+calc();
+</script>
+</body>
+</html>
