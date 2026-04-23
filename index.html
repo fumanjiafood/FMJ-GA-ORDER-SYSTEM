@@ -78,34 +78,34 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz9957MQzjAyEtuwGgzAsfS
 // ========== 商品数据 ==========
 // 生肉类（下单即附送 Zip袋+礼袋）
 const rawProducts = [
-  { name: "猪肉碎肉干（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
-  { name: "鸡肉碎肉干（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
-  { name: "切片肉干（附送各30pcs Zip袋＆礼袋）", price: 1100, unit: "Box/24Kg" },
-  { name: "帝王肉干（附送各20pcs Zip袋＆礼袋）", price: 1550, unit: "Box/20Kg" }
+  { name: "猪肉碎肉干 Minced Pork Meat（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
+  { name: "鸡肉碎肉干 Minced Chicken Meat（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
+  { name: "切片肉干 Sliced Pork Meat（附送各30pcs Zip袋＆礼袋）", price: 1100, unit: "Box/24Kg" },
+  { name: "帝王肉干 Bacon Pork Meat（附送各20pcs Zip袋＆礼袋）", price: 1550, unit: "Box/20Kg" }
 ];
 
 // 熟肉类
 const cookedProducts = [
-  { name: "猪肉碎肉干", price500: 41.5, price1kg: 83 },
-  { name: "鸡肉碎肉干", price500: 41.5, price1kg: 83 },
-  { name: "切片肉干", price500: 56.5, price1kg: 113 },
-  { name: "帝王肉干", price500: 79, price1kg: 158 },
-  { name: "精品肉松", price: 22, unit: "200G/Tin", isFixed: true },
-  { name: "黄金辣味虾米卷", price: 15, unit: "220G/Tin", isFixed: true },
-  { name: "炭烧鸡蛋饼", price: 22, unit: "340G/Tin", isFixed: true },
-  { name: "咸蛋鱼皮", price: 15, unit: "100G/Pkt", isFixed: true },
-  { name: "麻辣鱼皮", price: 15, unit: "100G/Pkt", isFixed: true }
+  { name: "猪肉碎肉干 Pork Meat (Minced Meat)", price500: 41.5, price1kg: 83 },
+  { name: "鸡肉碎肉干 Chicken Meat (Minced Meat)", price500: 41.5, price1kg: 83 },
+  { name: "切片肉干 BBQ Sliced Pork Meat", price500: 56.5, price1kg: 113 },
+  { name: "帝王肉干 Signature BBQ Bacon", price500: 79, price1kg: 158 },
+  { name: "精品肉松 Pork Floss", price: 22, unit: "200G/Tin", isFixed: true },
+  { name: "黄金辣味虾米卷 Spicy Spring Roll", price: 15, unit: "220G/Tin", isFixed: true },
+  { name: "炭烧鸡蛋饼 Traditional Kuih Kapit", price: 22, unit: "340G/Tin", isFixed: true },
+  { name: "咸蛋鱼皮 Salted Egg Fish Skin", price: 15, unit: "100G/Pkt", isFixed: true },
+  { name: "麻辣鱼皮 Mala Fish Skin", price: 15, unit: "100G/Pkt", isFixed: true }
 ];
 
 // 包装材料类
 const packagingProducts = [
-  { name: "真空袋（肉碎）", price: 60, unit: "400pcs/Pkt" },
-  { name: "真空袋（培根）", price: 70, unit: "200pcs/Pkt" },
-  { name: "Zip袋", price: 1.2, unit: "pcs" },
-  { name: "礼袋", price: 1.7, unit: "pcs" },
-  { name: "布条（大）10'x20'", price: 70, unit: "pcs" },
-  { name: "布条（中）3'x10'", price: 35, unit: "pcs" },
-  { name: "布条（小）2'x6'", price: 17, unit: "pcs" }
+  { name: "真空袋（肉碎） Vacuum bag (Minced Meat)", price: 60, unit: "400pcs/Pkt" },
+  { name: "真空袋（培根）Vacuum bag (Bacon)", price: 70, unit: "400pcs/Pkt" },
+  { name: "Zip袋 Zip Bag", price: 1.2, unit: "pcs" },
+  { name: "礼袋 Gift Bag", price: 1.7, unit: "pcs" },
+  { name: "布条（大）Banner (Big)10'x20'", price: 70, unit: "pcs" },
+  { name: "布条（中）Banner (Medium)3'x10'", price: 35, unit: "pcs" },
+  { name: "布条（小）Banner (Small)2'x6'", price: 17, unit: "pcs" }
 ];
 
 // 渲染生肉商品
