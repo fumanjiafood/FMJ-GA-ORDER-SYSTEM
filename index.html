@@ -63,9 +63,9 @@ button:disabled { background:gray; cursor:not-allowed;}
     <div class="total-item"><b>总计：RM <span id="total">0</span></b></div>
 </div>
 
-<!-- 附送礼品显示区 -->
+<!-- 附送显示区 -->
 <div id="giftDisplay" class="free-gift" style="display:none;">
-    <h4>🎁 附送礼品：</h4>
+    <h4>🎁 附送：</h4>
     <div id="giftContent"></div>
 </div>
 
@@ -158,7 +158,7 @@ function renderPackagingProducts() {
   document.getElementById("packagingProducts").innerHTML = html;
 }
 
-// 计算附送礼品
+// 计算附送
 function calculateFreeGifts() {
   let zipCount = 0;
   let giftBagCount = 0;
@@ -178,7 +178,7 @@ function calculateFreeGifts() {
   
   if (zipCount > 0 || giftBagCount > 0) {
     document.getElementById("giftDisplay").style.display = "block";
-    document.getElementById("giftContent").innerHTML = `🎁 附送 Zip袋 × ${zipCount} 个 &nbsp;&nbsp; 礼袋 × ${giftBagCount} 个`;
+    document.getElementById("giftContent").innerHTML = `🎁 Zip袋 × ${zipCount} 个 &nbsp;&nbsp; 礼袋 × ${giftBagCount} 个`;
   } else {
     document.getElementById("giftDisplay").style.display = "block";
     document.getElementById("giftContent").innerHTML = "📌 下单生肉商品即可获得附送Zip袋和礼袋";
@@ -266,35 +266,38 @@ async function submitOrder() {
   btn.disabled = true;
   btn.innerText = "提交中...";
   
+  // ⚠️ 重要：在读取图片之前先计算并保存附送信息
+  let giftInfo = calculateFreeGifts();  // 先计算一次
+  let savedZipCount = giftInfo.zipCount;
+  let savedGiftBagCount = giftInfo.giftBagCount;
+  
+  // 同时保存订单商品列表
+  let orderProducts = [];
+  
+  rawProducts.forEach((p, i) => {
+    let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
+    if (qty > 0) orderProducts.push({ name: p.name, qty: qty, price: p.price });
+  });
+  
+  cookedProducts.forEach((p, i) => {
+    if (p.isFixed) {
+      let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
+      if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
+    } else {
+      let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
+      let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
+      if (qty500 > 0) orderProducts.push({ name: `${p.name} 500G`, qty: qty500, price: p.price500 });
+      if (qty1kg > 0) orderProducts.push({ name: `${p.name} 1KG`, qty: qty1kg, price: p.price1kg });
+    }
+  });
+  
+  packagingProducts.forEach((p, i) => {
+    let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
+    if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
+  });
+  
   let reader = new FileReader();
   reader.onload = async function() {
-    // 收集订单商品
-    let orderProducts = [];
-    
-    rawProducts.forEach((p, i) => {
-      let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
-      if (qty > 0) orderProducts.push({ name: p.name, qty: qty, price: p.price });
-    });
-    
-    cookedProducts.forEach((p, i) => {
-      if (p.isFixed) {
-        let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
-        if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
-      } else {
-        let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
-        let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
-        if (qty500 > 0) orderProducts.push({ name: `${p.name} 500G`, qty: qty500, price: p.price500 });
-        if (qty1kg > 0) orderProducts.push({ name: `${p.name} 1KG`, qty: qty1kg, price: p.price1kg });
-      }
-    });
-    
-    packagingProducts.forEach((p, i) => {
-      let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
-      if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
-    });
-    
-    let giftInfo = calculateFreeGifts();
-    
     try {
       let res = await fetch(API_URL, {
         method: "POST",
@@ -309,7 +312,7 @@ async function submitOrder() {
           shippingFee: document.getElementById("shipping").innerText,
           total: document.getElementById("total").innerText,
           paymentImage: reader.result,
-          freeGifts: `Zip袋×${giftInfo.zipCount} 礼袋×${giftInfo.giftBagCount}`
+          freeGifts: `Zip袋×${savedZipCount} 礼袋×${savedGiftBagCount}`
         })
       });
       
@@ -322,7 +325,7 @@ async function submitOrder() {
           <p>我们会尽快处理您的订单</p >
           <p>请保留付款截图以备查询</p >
           <hr>
-          <p style="color:#8B0000;">🎁 ${giftInfo.zipCount > 0 ? `附送 Zip袋×${giftInfo.zipCount} 礼袋×${giftInfo.giftBagCount}` : "感谢您的订购"}</p >
+          <p style="color:#8B0000;">🎁 ${savedZipCount > 0 ? `附送 Zip袋×${savedZipCount} 礼袋×${savedGiftBagCount}` : "感谢您的订购"}</p >
         </div>`;
       } else {
         alert("提交失败：" + (data.message || "未知错误"));
