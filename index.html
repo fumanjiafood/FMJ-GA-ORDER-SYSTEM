@@ -21,11 +21,14 @@ button:disabled { background:gray; cursor:not-allowed;}
 .total-item b { font-size:20px; color:#8B0000;}
 .free-gift { background:#e8f5e9; padding:12px; border-radius:8px; margin:10px 0;}
 .free-gift h4 { margin:0 0 8px 0; color:#2e7d32;}
+.qty-group { display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px; }
+.qty-group button { width:30px; background:#ddd; color:#333; margin:0; padding:5px; font-size:16px; }
+.qty-group input { width:60px; text-align:center; margin:0; padding:5px; }
 </style>
 </head>
 <body>
 
-<h2>福满家 订单系统</h2>
+<h2>福满家 总代订单系统</h2>
 
 <h3>📋 客户资料</h3>
 <input id="name" placeholder="姓名 *">
@@ -108,45 +111,18 @@ const packagingProducts = [
   { name: "布条（小）Banner (Small)2'x6'", price: 17, unit: "pcs" }
 ];
 
+// ========== 渲染函数 ==========
 // 渲染生肉商品
-// 渲染熟肉商品
-function renderCookedProducts() {
+function renderRawProducts() {
   let html = "";
-  cookedProducts.forEach((p, i) => {
-    if (p.isFixed) {
-      // 固定包装的商品（肉松、虾米卷等）
-      html += `<div class="product">
-          <span class="product-name">${p.name}</span>
-          <span class="product-price">RM${p.price} / ${p.unit}</span>
-          <span class="product-qty">
-            <input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1" style="width:80px;">
-          </span>
-      </div>`;
-    } else {
-      // 有 500G 和 1KG 选项的商品 - 上下按钮布局
-      html += `<div class="product" style="flex-direction:column; align-items:flex-start;">
-          <div style="width:100%; margin-bottom:8px;">
-            <span class="product-name">${p.name}</span>
-            <span class="product-price" style="float:right;">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
-          </div>
-          <div style="display:flex; gap:20px; width:100%;">
-            <div style="display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px;">
-              <span style="font-weight:bold; min-width:45px;">500G</span>
-              <button type="button" onclick="changeQty('cooked_${i}_500', -1)" style="width:30px; background:#ddd; color:#333; margin:0;">-</button>
-              <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()" style="width:60px; text-align:center; margin:0;">
-              <button type="button" onclick="changeQty('cooked_${i}_500', 1)" style="width:30px; background:#ddd; color:#333; margin:0;">+</button>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px;">
-              <span style="font-weight:bold; min-width:45px;">1KG</span>
-              <button type="button" onclick="changeQty('cooked_${i}_1kg', -1)" style="width:30px; background:#ddd; color:#333; margin:0;">-</button>
-              <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()" style="width:60px; text-align:center; margin:0;">
-              <button type="button" onclick="changeQty('cooked_${i}_1kg', 1)" style="width:30px; background:#ddd; color:#333; margin:0;">+</button>
-            </div>
-          </div>
-      </div>`;
-    }
+  rawProducts.forEach((p, i) => {
+    html += `<div class="product">
+        <span class="product-name">${p.name}</span>
+        <span class="product-price">RM${p.price} / ${p.unit}</span>
+        <span class="product-qty"><input type="number" id="raw_${i}" value="0" min="0" onchange="calc()" step="1"></span>
+    </div>`;
   });
-  document.getElementById("cookedProducts").innerHTML = html;
+  document.getElementById("rawProducts").innerHTML = html;
 }
 
 // 增加/减少数量的辅助函数
@@ -157,7 +133,7 @@ function changeQty(elementId, delta) {
     newVal += delta;
     if (newVal < 0) newVal = 0;
     input.value = newVal;
-    calc();  // 重新计算总价
+    calc();
   }
 }
 
@@ -169,16 +145,30 @@ function renderCookedProducts() {
       html += `<div class="product">
           <span class="product-name">${p.name}</span>
           <span class="product-price">RM${p.price} / ${p.unit}</span>
-          <span class="product-qty"><input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1"></span>
+          <span class="product-qty">
+            <input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1" style="width:80px;">
+          </span>
       </div>`;
     } else {
-      html += `<div class="product">
-          <span class="product-name">${p.name}</span>
-          <span class="product-price">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
-          <span class="product-qty">
-            500G: <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()" style="width:60px;">
-            1KG: <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()" style="width:60px;">
-          </span>
+      html += `<div class="product" style="flex-direction:column; align-items:flex-start;">
+          <div style="width:100%; margin-bottom:8px;">
+            <span class="product-name">${p.name}</span>
+            <span class="product-price" style="float:right;">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
+          </div>
+          <div style="display:flex; gap:20px; width:100%;">
+            <div class="qty-group">
+              <span style="font-weight:bold; min-width:45px;">500G</span>
+              <button type="button" onclick="changeQty('cooked_${i}_500', -1)">-</button>
+              <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()">
+              <button type="button" onclick="changeQty('cooked_${i}_500', 1)">+</button>
+            </div>
+            <div class="qty-group">
+              <span style="font-weight:bold; min-width:45px;">1KG</span>
+              <button type="button" onclick="changeQty('cooked_${i}_1kg', -1)">-</button>
+              <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()">
+              <button type="button" onclick="changeQty('cooked_${i}_1kg', 1)">+</button>
+            </div>
+          </div>
       </div>`;
     }
   });
@@ -198,7 +188,8 @@ function renderPackagingProducts() {
   document.getElementById("packagingProducts").innerHTML = html;
 }
 
-// 计算附送
+// ========== 计算函数 ==========
+// 计算附送礼品
 function calculateFreeGifts() {
   let zipCount = 0;
   let giftBagCount = 0;
@@ -206,7 +197,7 @@ function calculateFreeGifts() {
   rawProducts.forEach((p, i) => {
     let qty = parseInt(document.getElementById(`raw_${i}`)?.value) || 0;
     if (qty > 0) {
-      if (p.name.includes("帝王肉干")) {
+      if (p.name.includes("帝王肉干") || p.name.includes("Bacon")) {
         zipCount += qty * 20;
         giftBagCount += qty * 20;
       } else {
@@ -244,10 +235,10 @@ function calc() {
     if (p.isFixed) {
       let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
       total += qty * p.price;
-      if (p.name.includes("肉松")) weight += qty * 0.2;
-      else if (p.name.includes("虾米卷")) weight += qty * 0.22;
-      else if (p.name.includes("鸡蛋饼")) weight += qty * 0.34;
-      else if (p.name.includes("鱼皮")) weight += qty * 0.1;
+      if (p.name.includes("肉松") || p.name.includes("Floss")) weight += qty * 0.2;
+      else if (p.name.includes("虾米卷") || p.name.includes("Spring Roll")) weight += qty * 0.22;
+      else if (p.name.includes("鸡蛋饼") || p.name.includes("Kuih Kapit")) weight += qty * 0.34;
+      else if (p.name.includes("鱼皮") || p.name.includes("Fish Skin")) weight += qty * 0.1;
     } else {
       let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
       let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
@@ -281,7 +272,7 @@ function calc() {
   calculateFreeGifts();
 }
 
-// 提交订单
+// ========== 提交订单 ==========
 async function submitOrder() {
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
@@ -306,12 +297,12 @@ async function submitOrder() {
   btn.disabled = true;
   btn.innerText = "提交中...";
   
-  // ⚠️ 重要：在读取图片之前先计算并保存附送信息
-  let giftInfo = calculateFreeGifts();  // 先计算一次
+  // 保存附送信息
+  let giftInfo = calculateFreeGifts();
   let savedZipCount = giftInfo.zipCount;
   let savedGiftBagCount = giftInfo.giftBagCount;
   
-  // 同时保存订单商品列表
+  // 保存订单商品列表
   let orderProducts = [];
   
   rawProducts.forEach((p, i) => {
@@ -388,7 +379,7 @@ async function submitOrder() {
   reader.readAsDataURL(file);
 }
 
-// 绑定事件和初始化
+// ========== 初始化 ==========
 document.getElementById("submitBtn").onclick = submitOrder;
 renderRawProducts();
 renderCookedProducts();
