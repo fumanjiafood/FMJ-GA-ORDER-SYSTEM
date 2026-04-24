@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>福满家 订单系统</title>
+<title>福满家 总代订单系统</title>
 <style>
 body { font-family: Arial; max-width:650px; margin:auto; padding:20px; background:#f9f9f9;}
 h2 { text-align:center; color:#8B0000;}
@@ -73,7 +73,7 @@ button:disabled { background:gray; cursor:not-allowed;}
 
 <script>
 // ⚠️ 请替换成你最新的 Apps Script URL
-const API_URL = "https://script.google.com/macros/s/AKfycbz9957MQzjAyEtuwGgzAsfSaC9XpjsCzgSMw_cwrNRiuYwtdEwfn8OYeO_nXDtlSfNqjQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbx_305cpOR5rHcNjm2v-VL7rCeBt0XYYia4cgJ6VOPBRMIzEjxXfiezmXT6S0VoPxc/exec";
 
 // ========== 商品数据 ==========
 // 生肉类（下单即附送 Zip袋+礼袋）
@@ -109,16 +109,56 @@ const packagingProducts = [
 ];
 
 // 渲染生肉商品
-function renderRawProducts() {
+// 渲染熟肉商品
+function renderCookedProducts() {
   let html = "";
-  rawProducts.forEach((p, i) => {
-    html += `<div class="product">
-        <span class="product-name">${p.name}</span>
-        <span class="product-price">RM${p.price} / ${p.unit}</span>
-        <span class="product-qty"><input type="number" id="raw_${i}" value="0" min="0" onchange="calc()" step="1"></span>
-    </div>`;
+  cookedProducts.forEach((p, i) => {
+    if (p.isFixed) {
+      // 固定包装的商品（肉松、虾米卷等）
+      html += `<div class="product">
+          <span class="product-name">${p.name}</span>
+          <span class="product-price">RM${p.price} / ${p.unit}</span>
+          <span class="product-qty">
+            <input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1" style="width:80px;">
+          </span>
+      </div>`;
+    } else {
+      // 有 500G 和 1KG 选项的商品 - 上下按钮布局
+      html += `<div class="product" style="flex-direction:column; align-items:flex-start;">
+          <div style="width:100%; margin-bottom:8px;">
+            <span class="product-name">${p.name}</span>
+            <span class="product-price" style="float:right;">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
+          </div>
+          <div style="display:flex; gap:20px; width:100%;">
+            <div style="display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px;">
+              <span style="font-weight:bold; min-width:45px;">500G</span>
+              <button type="button" onclick="changeQty('cooked_${i}_500', -1)" style="width:30px; background:#ddd; color:#333; margin:0;">-</button>
+              <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()" style="width:60px; text-align:center; margin:0;">
+              <button type="button" onclick="changeQty('cooked_${i}_500', 1)" style="width:30px; background:#ddd; color:#333; margin:0;">+</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px;">
+              <span style="font-weight:bold; min-width:45px;">1KG</span>
+              <button type="button" onclick="changeQty('cooked_${i}_1kg', -1)" style="width:30px; background:#ddd; color:#333; margin:0;">-</button>
+              <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()" style="width:60px; text-align:center; margin:0;">
+              <button type="button" onclick="changeQty('cooked_${i}_1kg', 1)" style="width:30px; background:#ddd; color:#333; margin:0;">+</button>
+            </div>
+          </div>
+      </div>`;
+    }
   });
-  document.getElementById("rawProducts").innerHTML = html;
+  document.getElementById("cookedProducts").innerHTML = html;
+}
+
+// 增加/减少数量的辅助函数
+function changeQty(elementId, delta) {
+  let input = document.getElementById(elementId);
+  if (input) {
+    let newVal = parseInt(input.value) || 0;
+    newVal += delta;
+    if (newVal < 0) newVal = 0;
+    input.value = newVal;
+    calc();  // 重新计算总价
+  }
 }
 
 // 渲染熟肉商品
