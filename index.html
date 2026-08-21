@@ -1,390 +1,7000 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="zh-CN">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>福满家 总代订单系统</title>
+
+<meta
+
+  name="viewport"
+
+  content="width=device-width, initial-scale=1.0"
+
+>
+
+<title>福满家食品有限公司｜代理在线下单</title>
+
 <style>
-body { font-family: Arial; max-width:650px; margin:auto; padding:20px; background:#f9f9f9;}
-h2 { text-align:center; color:#8B0000;}
-h3 { background:#eee; padding:8px; border-left:4px solid #8B0000; margin-top:20px;}
-input, select { width:100%; padding:10px; margin:5px 0; box-sizing:border-box; border:1px solid #ddd; border-radius:5px;}
-.product { border-bottom:1px solid #eee; padding:12px 5px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
-.product-name { flex:2; font-weight:bold;}
-.product-price { flex:1; color:#666; font-size:14px;}
-.product-qty { flex:1; min-width:100px;}
-.product-qty input { width:80px; padding:8px; text-align:center;}
-button { width:100%; padding:12px; background:#8B0000; color:white; border:none; font-size:18px; cursor:pointer; border-radius:5px; margin-top:10px;}
-button:disabled { background:gray; cursor:not-allowed;}
-.total { background:#fff3e0; padding:15px; border-radius:8px; margin:15px 0;}
-.total-item { display:flex; justify-content:space-between; margin:8px 0;}
-.total-item b { font-size:20px; color:#8B0000;}
-.free-gift { background:#e8f5e9; padding:12px; border-radius:8px; margin:10px 0;}
-.free-gift h4 { margin:0 0 8px 0; color:#2e7d32;}
-.qty-group { display:flex; align-items:center; gap:8px; background:#f0f0f0; padding:5px 10px; border-radius:8px; }
-.qty-group button { width:30px; background:#ddd; color:#333; margin:0; padding:5px; font-size:16px; }
-.qty-group input { width:60px; text-align:center; margin:0; padding:5px; }
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+html,
+
+body {
+
+  margin: 0;
+
+  padding: 0;
+
+}
+
+body {
+
+  font-family:
+
+    Arial,
+
+    "Microsoft YaHei",
+
+    "PingFang SC",
+
+    sans-serif;
+
+  background: #FCFBFF;
+
+  color: #5a3e2e;
+
+}
+
+button,
+
+input,
+
+select,
+
+textarea {
+
+  font: inherit;
+
+}
+
+button {
+
+  cursor: pointer;
+
+}
+
+button:disabled {
+
+  cursor: not-allowed;
+
+  opacity: 0.45;
+
+}
+
+.container {
+
+  width: min(100%, 760px);
+
+  margin: 0 auto;
+
+  padding: 20px 14px 50px;
+
+}
+
+  /* ============================================================
+付款资料
+============================================================ */
+
+.payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.payment-card {
+  background: #ffffff;
+  border: 1px solid #e8e2d8;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+}
+
+.payment-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.payment-qr {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.payment-bank {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.payment-note {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.payment-upload {
+  margin-bottom: 20px;
+}
+
+.upload-note {
+  font-size: 13px;
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+/* =========================
+
+   网站标题
+
+========================= */
+
+.site-header {
+
+  text-align: center;
+
+  padding: 25px 10px 20px;
+
+}
+
+.site-title {
+
+  margin: 0;
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+}
+
+.site-subtitle {
+
+  margin-top: 8px;
+
+  font-size: 13px;
+
+  color: #777;
+
+}
+  /* =========================
+
+   区块
+
+========================= */
+
+.section {
+
+  margin-top: 20px;
+
+}
+
+.section-heading {
+
+  margin: 0 0 12px;
+
+  padding-bottom: 8px;
+
+  border-bottom: 2px solid #222;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
+}
+
+.section-subheading {
+
+  margin: 22px 0 12px;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+}
+
+/* =========================
+
+   顾客资料
+
+========================= */
+
+.form-card {
+
+  background: #fff;
+
+  border-radius: 14px;
+
+  padding: 18px;
+
+  box-shadow:
+
+    0 3px 14px
+
+    rgba(0,0,0,0.05);
+
+}
+
+.form-group {
+
+  margin-bottom: 15px;
+
+}
+
+.form-group:last-child {
+
+  margin-bottom: 0;
+
+}
+
+.form-label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+}
+
+.required {
+
+  color: #c62828;
+
+}
+
+.form-input,
+
+.form-select,
+
+.form-textarea {
+
+  width: 100%;
+
+  padding: 12px;
+
+  border:
+
+    1px solid
+
+    #d7d7d7;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  outline: none;
+
+}
+
+.form-input:focus,
+
+.form-select:focus,
+
+.form-textarea:focus {
+
+  border-color: #333;
+
+}
+
+.form-textarea {
+
+  min-height: 90px;
+
+  resize: vertical;
+
+}
+
+/* =========================
+
+   商品卡片
+
+========================= */
+
+.product-card {
+
+  background: #fff;
+
+  margin-bottom: 14px;
+
+  padding: 17px;
+
+  border-radius: 14px;
+
+  box-shadow:
+
+    0 3px 14px
+
+    rgba(0,0,0,0.05);
+
+}
+
+.product-name {
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  line-height: 1.45;
+
+}
+
+.product-en {
+
+  margin-top: 4px;
+
+  font-size: 13px;
+
+  color: #777;
+
+}
+
+.product-price {
+
+  margin-top: 10px;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+}
+
+.product-desc {
+
+  margin-top: 8px;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+
+  color: #666;
+
+}
+
+.product-flavors {
+
+  margin-top: 12px;
+
+  padding-top: 12px;
+
+  border-top:
+
+    1px solid
+
+    #eeeeee;
+
+}
+
+.flavor-line {
+
+  padding: 5px 0;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+}
+
+.stock-text {
+
+  margin-top: 10px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+.stock-ok {
+
+  color: #27823b;
+
+}
+
+.stock-low {
+
+  color: #c62828;
+
+}
+
+.stock-loading {
+
+  color: #888;
+
+}
+
+/* =========================
+
+   数量控制
+
+========================= */
+
+.quantity-row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-top: 16px;
+
+}
+
+.quantity-title {
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+}
+
+.qty-control {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+}
+
+.qty-btn {
+
+  width: 36px;
+
+  height: 36px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  font-size: 20px;
+
+  line-height: 1;
+
+}
+
+.qty-number {
+
+  min-width: 42px;
+
+  text-align: center;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+}
+
+/* =========================
+
+   自选口味
+
+========================= */
+
+.mix-box {
+
+  margin-top: 14px;
+
+  padding-top: 14px;
+
+  border-top:
+
+    1px solid
+
+    #eeeeee;
+
+}
+
+.mix-info {
+
+  margin-bottom: 12px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #f7f7f7;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+.mix-count {
+
+  margin-bottom: 12px;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+}
+
+.flavor-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 12px 0;
+
+  border-bottom:
+
+    1px solid
+
+    #eeeeee;
+
+}
+
+.flavor-item:last-child {
+
+  border-bottom: none;
+
+}
+
+.flavor-name {
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+}
+
+.flavor-en {
+
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  color: #777;
+
+}
+
+.flavor-stock {
+
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+}
+
+.flavor-qty-control {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+/* =========================
+
+   提示
+
+========================= */
+
+.warning-box {
+
+  margin-top: 10px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #fff3cd;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  color: #7a5a00;
+
+}
+
+.error-box {
+
+  margin-top: 10px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #ffebee;
+
+  color: #b71c1c;
+
+  font-size: 13px;
+
+}
+
+/* =========================
+
+   付款资料
+
+========================= */
+
+.payment-card {
+
+  background: #fff;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  box-shadow:
+
+    0 3px 14px
+
+    rgba(0,0,0,0.05);
+
+}
+
+.payment-title {
+
+  margin-bottom: 14px;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+}
+
+.payment-link {
+
+  display: block;
+
+  margin-bottom: 10px;
+
+  padding: 12px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  color: #222;
+
+  text-decoration: none;
+
+  font-weight: 700;
+
+}
+
+.payment-upload {
+
+  margin-top: 16px;
+
+}
+
+/* =========================
+
+   金额
+
+========================= */
+
+.summary-card {
+
+  background: #fff;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  box-shadow:
+
+    0 3px 14px
+
+    rgba(0,0,0,0.05);
+
+}
+
+.summary-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 9px 0;
+
+  font-size: 15px;
+
+}
+
+.summary-total {
+
+  margin-top: 8px;
+
+  padding-top: 14px;
+
+  border-top:
+
+    1px solid
+
+    #ddd;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
+}
+
+/* =========================
+
+   提交按钮
+
+========================= */
+
+.submit-btn {
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #222;
+
+  color: #fff;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+}
+
+.submit-btn:hover {
+
+  opacity: 0.9;
+
+}
+
+/* =========================
+
+   Footer
+
+========================= */
+
+.footer {
+
+  margin-top: 30px;
+
+  padding-top: 18px;
+
+  border-top:
+
+    1px solid
+
+    #ddd;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  line-height: 1.8;
+
+  color: #666;
+
+}
+
+@media (
+
+  max-width: 480px
+
+) {
+
+  .container {
+
+    padding:
+
+      15px 10px 40px;
+
+  }
+
+  .site-title {
+
+    font-size: 24px;
+
+  }
+
+  .product-card,
+
+  .form-card,
+
+  .payment-card,
+
+  .summary-card {
+
+    border-radius: 11px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 <body>
 
-<h2>福满家 总代订单系统</h2>
+<div
 
-<h3>📋 客户资料</h3>
-<input id="name" placeholder="姓名 *">
-<input id="phone" placeholder="联络号码 *">
-<input id="address" placeholder="地址 *">
+  class="container"
 
-<h3>🚚 配送方式</h3>
-<select id="delivery" onchange="calc()">
-  <option value="自取">自取</option>
-  <option value="邮寄">邮寄</option>
-</select>
-<p><b>自取地址：</b>9, Jalan Perdagangan 1, Taman Universiti, 81300, Skudai, Johor.</p >
+>
 
-<!-- 生肉商品 -->
-<h3>🥩 生肉（附送Zip袋＋礼袋）</h3>
-<div id="rawProducts"></div>
+  <!-- =========================
 
-<!-- 熟肉商品 -->
-<h3>🍖 熟肉</h3>
-<div id="cookedProducts"></div>
+       网站标题
 
-<!-- 包装材料 -->
-<h3>📦 包装材料</h3>
-<div id="packagingProducts"></div>
+  ========================== -->
+
+  <header
+
+    class="site-header"
+
+  >
+
+    <h1
+
+      class="site-title"
+
+    >
+
+      福满家食品有限公司
+
+    </h1>
+
+    <div
+
+      class="site-subtitle"
+
+    >
+
+      Online Ordering System
+
+    </div>
+
+  </header>
+
+  <!-- =========================
+
+       第一步：顾客资料
+
+  ========================== -->
+
+  <section
+
+    class="section"
+
+  >
+
+    <h2
+
+      class="section-heading"
+
+    >
+
+      第一步｜顾客资料
+
+    </h2>
+
+    <div
+
+      class="form-card"
+
+    >
+
+      <!-- 姓名 -->
+
+      <div
+
+        class="form-group"
+
+      >
+
+        <label
+
+          class="form-label"
+
+          for="name"
+
+        >
+
+          姓名
+
+          <span
+
+            class="required"
+
+          >
+
+            *
+
+          </span>
+
+        </label>
+
+        <input
+
+          id="name"
+
+          class="form-input"
+
+          type="text"
+
+          placeholder="请输入姓名"
+
+        >
+
+      </div>
+
+      <!-- 联络号码 -->
+
+      <div
+
+        class="form-group"
+
+      >
+
+        <label
+
+          class="form-label"
+
+          for="phone"
+
+        >
+
+          联络号码
+
+          <span
+
+            class="required"
+
+          >
+
+            *
+
+          </span>
+
+        </label>
+
+        <input
+
+          id="phone"
+
+          class="form-input"
+
+          type="tel"
+
+          placeholder="请输入联络号码"
+
+        >
+
+      </div>
+
+      <!-- 配送方式 -->
+
+      <div
+
+        class="form-group"
+
+      >
+
+        <label
+
+          class="form-label"
+
+          for="delivery"
+
+        >
+
+          配送方式
+
+          <span
+
+            class="required"
+
+          >
+
+            *
+
+          </span>
+
+        </label>
+
+        <select
+
+          id="delivery"
+
+          class="form-select"
+
+          onchange="handleDeliveryChange()"
+
+        >
+
+          <option
+
+            value=""
+
+          >
+
+            请选择配送方式
+
+          </option>
+
+          <option
+
+            value="pickup"
+
+          >
+
+            自取 Pickup
+
+          </option>
+
+          <option
+
+            value="shipping"
+
+          >
+
+            邮寄 Shipping
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- 地址 -->
+
+      <div
+
+        class="form-group"
+
+      >
+
+        <label
+
+          class="form-label"
+
+          for="address"
+
+        >
+
+          地址
+
+          <span
+
+            class="required"
+
+          >
+
+            *
+
+          </span>
+
+        </label>
+
+        <textarea
+
+          id="address"
+
+          class="form-textarea"
+
+          placeholder="请输入完整地址"
+
+        ></textarea>
+
+      </div>
+
+      <!-- 备注 -->
+
+      <div
+
+        class="form-group"
+
+      >
+
+        <label
+
+          class="form-label"
+
+          for="remark"
+
+        >
+
+          备注
+
+        </label>
+
+        <textarea
+
+          id="remark"
+
+          class="form-textarea"
+
+          placeholder="如有任何特别要求，请填写在这里（可不填）"
+
+        ></textarea>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =========================
+
+       第二步：中秋产品
+
+  ========================== -->
+
+  <section
+
+    class="section"
+
+  >
+
+    <h2
+
+      class="section-heading"
+
+    >
+
+      第二步｜中秋产品
+
+    </h2>
+
+    <div
+
+      id="midAutumnProductList"
+
+    >
+
+      商品加载中...
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+
+       第三步：肉干及零食
+
+  ========================== -->
+
+  <section
+
+    class="section"
+
+  >
+
+    <h2
+
+      class="section-heading"
+
+    >
+
+      第三步｜肉干及零食
+
+    </h2>
+
+    <div
+
+      id="jerkyProductList"
+
+    >
+
+      商品加载中...
+
+    </div>
+
+  </section>
+
+
+<!-- ============================================================
+
+备注
+
+============================================================ -->
 
 <h3>📝 备注</h3>
-<input id="remark" placeholder="备注（可选）">
 
-<h3>🖼️ 上传付款截图 *</h3>
-<input type="file" id="payment" accept="image/*">
+<input
 
-<div class="total">
-    <div class="total-item">商品总计：RM <span id="productTotal">0</span></div>
-    <div class="total-item">运费：RM <span id="shipping">0</span></div>
-    <div class="total-item"><b>总计：RM <span id="total">0</span></b></div>
+  id="remark"
+
+  placeholder="特殊要求或备注（可不填写）"
+
+>
+
+<!-- ============================================================
+
+上传付款截图
+
+============================================================ -->
+
+<!-- ============================================================
+
+付款资料
+
+============================================================ -->
+
+<h3>💳 付款资料</h3>
+
+<div class="payment-info">
+
+  <!-- DuitNow QR -->
+
+  <div class="payment-card">
+
+    <div class="payment-title">
+
+      DuitNow QR
+
+    </div>
+
+    <img
+
+      src="./FMJ_DUITNOW_QR.jpg""
+
+      class="payment-qr"
+
+      alt="DuitNow QR Code"
+
+    >
+
+    <div class="payment-note">
+
+      请扫描 QR Code 进行付款
+
+    </div>
+
+  </div>
+
+  <!-- 银行户口 -->
+
+  <div class="payment-card">
+
+    <div class="payment-title">
+
+      Bank Transfer
+
+    </div>
+
+    <img
+
+      src="./FMJ_PBB_Account.jpg"
+
+      class="payment-bank"
+
+      alt="Bank Account"
+
+    >
+
+    <div class="payment-note">
+
+      请使用以上银行户口资料进行付款
+
+    </div>
+
+  </div>
+
 </div>
 
-<!-- 附送显示区 -->
-<div id="giftDisplay" class="free-gift" style="display:none;">
-    <h4>🎁 附送：</h4>
-    <div id="giftContent"></div>
+<!-- ============================================================
+
+备注
+
+============================================================ -->
+
+<h3>📝 备注</h3>
+
+<input
+
+  id="remark"
+
+  placeholder="特殊要求或备注（可不填写）"
+
+>
+
+<!-- ============================================================
+
+上传付款截图
+
+============================================================ -->
+
+<h3>
+
+  🖼️ 上传付款截图
+
+  <span class="required-star">*</span>
+
+</h3>
+
+<div class="payment-upload">
+
+  <div class="upload-note">
+
+    请完成付款后，上传付款截图
+
+  </div>
+
+  <input
+
+    type="file"
+
+    id="payment"
+
+    accept="image/*"
+
+    required
+
+  >
+
 </div>
 
-<button id="submitBtn">提交订单</button>
+</div>
+
+  <!-- =========================
+
+       第五步：订单金额
+
+  ========================== -->
+
+  <section
+
+    class="section"
+
+  >
+
+    <h2
+
+      class="section-heading"
+
+    >
+
+      第五步｜订单金额
+
+    </h2>
+
+    <div
+
+      class="summary-card"
+
+    >
+
+      <div
+
+        class="summary-row"
+
+      >
+
+        <span>
+
+          商品金额
+
+        </span>
+
+        <strong
+
+          id="productTotal"
+
+        >
+
+          RM0.00
+
+        </strong>
+
+      </div>
+
+      <div
+
+        class="summary-row"
+
+      >
+
+        <span>
+
+          邮费
+
+        </span>
+
+        <strong
+
+          id="shippingFee"
+
+        >
+
+          RM0.00
+
+        </strong>
+
+      </div>
+
+      <div
+
+        class="summary-row summary-total"
+
+      >
+
+        <span>
+
+          总金额
+
+        </span>
+
+        <strong
+
+          id="grandTotal"
+
+        >
+
+          RM0.00
+
+        </strong>
+
+      </div>
+
+    </div>
+
+    <button
+
+      id="submitBtn"
+
+      class="submit-btn"
+
+      type="button"
+
+      onclick="submitOrder()"
+
+    >
+
+      提交订单
+
+    </button>
+
+  </section>
+
+  <!-- =========================
+
+       Footer
+
+  ========================== -->
+
+  <footer
+
+    class="footer"
+
+  >
+
+    <strong>
+
+      福满家食品有限公司
+
+    </strong>
+
+    <br>
+
+    9, Jalan Perdagangan 1,
+
+    <br>
+
+    Taman Universiti, 81300,
+
+    <br>
+
+    Skudai, Johor.
+
+    <br><br>
+
+    联络客服
+
+    <br>
+
+    016 589 6688
+
+  </footer>
+
+</div>
 
 <script>
-// ⚠️ 请替换成你最新的 Apps Script URL
-const API_URL = "https://script.google.com/macros/s/AKfycbx_305cpOR5rHcNjm2v-VL7rCeBt0XYYia4cgJ6VOPBRMIzEjxXfiezmXT6S0VoPxc/exec";
 
-// ========== 商品数据 ==========
-// 生肉类（下单即附送 Zip袋+礼袋）
-const rawProducts = [
-  { name: "猪肉碎肉干 Minced Pork Meat（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
-  { name: "鸡肉碎肉干 Minced Chicken Meat（附送各30pcs Zip袋＆礼袋）", price: 950, unit: "Box/24Kg" },
-  { name: "切片肉干 Sliced Pork Meat（附送各30pcs Zip袋＆礼袋）", price: 1100, unit: "Box/24Kg" },
-  { name: "帝王肉干 Bacon Pork Meat（附送各20pcs Zip袋＆礼袋）", price: 1550, unit: "Box/20Kg" }
+// ============================================================
+
+// Google Apps Script URL
+
+// ============================================================
+
+const API_URL =
+
+  "https://script.google.com/macros/s/AKfycbwHMmB9SpJjEBuxN1gFbu1NNoOIR3XvOr450ZFA4bqTFrbNHNuZc35sskbvv7VhusM8zw/exec";
+
+// ============================================================
+
+// 商品库存
+
+//
+
+// key = Inventory ID
+
+// value = 当前库存数量
+
+// ============================================================
+
+let stocks = {};
+
+// ============================================================
+
+// 普通商品选择数量
+
+//
+
+// 福满四季、蛋黄酥、双黄肉干礼盒、
+
+// 猫山王、肉干及零食等
+
+// ============================================================
+
+let quantities = {};
+
+// ============================================================
+
+// 烤皮＆酥皮礼盒
+
+//
+
+// 购买多少组礼盒
+
+// ============================================================
+
+let traditionalFlakyBoxQty = 0;
+
+// ============================================================
+
+// 烤皮＆酥皮口味选择数量
+
+//
+
+// 每一个口味使用自己的 Inventory ID
+
+// ============================================================
+
+let traditionalFlakyFlavorQty = {};
+
+// ============================================================
+
+// 冰皮月饼礼盒
+
+//
+
+// 购买多少组礼盒
+
+// ============================================================
+
+let snowSkinBoxQty = 0;
+
+// ============================================================
+
+// 冰皮月饼口味选择数量
+
+//
+
+// 每一个口味使用自己的 Inventory ID
+
+// ============================================================
+
+let snowSkinFlavorQty = {};
+
+// ============================================================
+
+// 固定礼盒库存 ID
+
+// ============================================================
+
+// 蛋黄酥
+
+const EGG_YOLK_PASTRY_FLAVORS = [
+
+  29,
+
+  30,
+
+  31
+
 ];
 
-// 熟肉类
-const cookedProducts = [
-  { name: "猪肉碎肉干 Pork Meat (Minced Meat)", price500: 41.5, price1kg: 83 },
-  { name: "鸡肉碎肉干 Chicken Meat (Minced Meat)", price500: 41.5, price1kg: 83 },
-  { name: "切片肉干 BBQ Sliced Pork Meat", price500: 56.5, price1kg: 113 },
-  { name: "帝王肉干 Signature BBQ Bacon", price500: 79, price1kg: 158 },
-  { name: "精品肉松 Pork Floss", price: 22, unit: "200G/Tin", isFixed: true },
-  { name: "黄金辣味虾米卷 Spicy Spring Roll", price: 15, unit: "220G/Tin", isFixed: true },
-  { name: "炭烧鸡蛋饼 Traditional Kuih Kapit", price: 22, unit: "340G/Tin", isFixed: true },
-  { name: "咸蛋鱼皮 Salted Egg Fish Skin", price: 15, unit: "100G/Pkt", isFixed: true },
-  { name: "麻辣鱼皮 Mala Fish Skin", price: 15, unit: "100G/Pkt", isFixed: true }
+// 双黄＆肉干月饼
+
+const TWO_YOLK_DRY_MEAT_FLAVORS = [
+
+  21,
+
+  22,
+
+  23,
+
+  24
+
 ];
 
-// 包装材料类
-const packagingProducts = [
-  { name: "真空袋（肉碎） Vacuum bag (Minced Meat)", price: 60, unit: "400pcs/Pkt" },
-  { name: "真空袋（培根）Vacuum bag (Bacon)", price: 70, unit: "200pcs/Pkt" },
-  { name: "Zip袋 Zip Bag", price: 1.2, unit: "pcs" },
-  { name: "礼袋 Gift Bag", price: 1.7, unit: "pcs" },
-  { name: "布条（大）Banner (Big)10'x20'", price: 70, unit: "pcs" },
-  { name: "布条（中）Banner (Medium)3'x10'", price: 35, unit: "pcs" },
-  { name: "布条（小）Banner (Small)2'x6'", price: 17, unit: "pcs" }
-];
+// ============================================================
 
-// ========== 渲染函数 ==========
-// 渲染生肉商品
-function renderRawProducts() {
-  let html = "";
-  rawProducts.forEach((p, i) => {
-    html += `<div class="product">
-        <span class="product-name">${p.name}</span>
-        <span class="product-price">RM${p.price} / ${p.unit}</span>
-        <span class="product-qty"><input type="number" id="raw_${i}" value="0" min="0" onchange="calc()" step="1"></span>
-    </div>`;
-  });
-  document.getElementById("rawProducts").innerHTML = html;
-}
+// 中秋产品
 
-// 增加/减少数量的辅助函数
-function changeQty(elementId, delta) {
-  let input = document.getElementById(elementId);
-  if (input) {
-    let newVal = parseInt(input.value) || 0;
-    newVal += delta;
-    if (newVal < 0) newVal = 0;
-    input.value = newVal;
-    calc();
-  }
-}
+// ============================================================
 
-// 渲染熟肉商品
-function renderCookedProducts() {
-  let html = "";
-  cookedProducts.forEach((p, i) => {
-    if (p.isFixed) {
-      html += `<div class="product">
-          <span class="product-name">${p.name}</span>
-          <span class="product-price">RM${p.price} / ${p.unit}</span>
-          <span class="product-qty">
-            <input type="number" id="cooked_${i}" value="0" min="0" onchange="calc()" step="1" style="width:80px;">
-          </span>
-      </div>`;
-    } else {
-      html += `<div class="product" style="flex-direction:column; align-items:flex-start;">
-          <div style="width:100%; margin-bottom:8px;">
-            <span class="product-name">${p.name}</span>
-            <span class="product-price" style="float:right;">500G: RM${p.price500} | 1KG: RM${p.price1kg}</span>
-          </div>
-          <div style="display:flex; gap:20px; width:100%;">
-            <div class="qty-group">
-              <span style="font-weight:bold; min-width:45px;">500G</span>
-              <button type="button" onclick="changeQty('cooked_${i}_500', -1)">-</button>
-              <input type="number" id="cooked_${i}_500" value="0" min="0" onchange="calc()">
-              <button type="button" onclick="changeQty('cooked_${i}_500', 1)">+</button>
-            </div>
-            <div class="qty-group">
-              <span style="font-weight:bold; min-width:45px;">1KG</span>
-              <button type="button" onclick="changeQty('cooked_${i}_1kg', -1)">-</button>
-              <input type="number" id="cooked_${i}_1kg" value="0" min="0" onchange="calc()">
-              <button type="button" onclick="changeQty('cooked_${i}_1kg', 1)">+</button>
-            </div>
-          </div>
-      </div>`;
-    }
-  });
-  document.getElementById("cookedProducts").innerHTML = html;
-}
+const midAutumnProducts = [
 
-// 渲染包装材料
-function renderPackagingProducts() {
-  let html = "";
-  packagingProducts.forEach((p, i) => {
-    html += `<div class="product">
-        <span class="product-name">${p.name}</span>
-        <span class="product-price">RM${p.price} / ${p.unit}</span>
-        <span class="product-qty"><input type="number" id="pack_${i}" value="0" min="0" onchange="calc()" step="1"></span>
-    </div>`;
-  });
-  document.getElementById("packagingProducts").innerHTML = html;
-}
+  {
 
-// ========== 计算函数 ==========
-// 计算附送礼品
-function calculateFreeGifts() {
-  let zipCount = 0;
-  let giftBagCount = 0;
-  
-  rawProducts.forEach((p, i) => {
-    let qty = parseInt(document.getElementById(`raw_${i}`)?.value) || 0;
-    if (qty > 0) {
-      if (p.name.includes("帝王肉干") || p.name.includes("Bacon")) {
-        zipCount += qty * 20;
-        giftBagCount += qty * 20;
-      } else {
-        zipCount += qty * 30;
-        giftBagCount += qty * 30;
+    id: 33,
+
+    key: "fuManSeason",
+
+    name: "福满四季",
+
+    en: "Fu Man Season",
+
+    price: 59.90,
+
+    spec: "500G｜1pc",
+
+    boxText:
+
+      "1组礼盒里有1粒月饼",
+
+    type:
+
+      "normal"
+
+  },
+
+  {
+
+    id: "eggYolkPastryBox",
+
+    name: "蛋黄酥礼盒",
+
+    en: "Egg Yolk Pastry",
+
+    price: 59.90,
+
+    spec: "1盒6粒",
+
+    boxText:
+
+      "固定白莲肉干肉松、翡翠肉松麻薯、养生黑芝麻，各2粒，共6粒。不可选择口味。",
+
+    fixedFlavors: [
+
+      {
+
+        id: 29,
+
+        name: "白莲肉干肉松",
+
+        en: "Lotus Dried Meat Pork Floss",
+
+        qtyPerBox: 2
+
+      },
+
+      {
+
+        id: 30,
+
+        name: "翡翠肉松麻薯",
+
+        en: "Pandan Pork Floss Mochi",
+
+        qtyPerBox: 2
+
+      },
+
+      {
+
+        id: 31,
+
+        name: "养生黑芝麻",
+
+        en: "Black Sesame",
+
+        qtyPerBox: 2
+
       }
-    }
-  });
-  
-  if (zipCount > 0 || giftBagCount > 0) {
-    document.getElementById("giftDisplay").style.display = "block";
-    document.getElementById("giftContent").innerHTML = `🎁 Zip袋 × ${zipCount} 个 &nbsp;&nbsp; 礼袋 × ${giftBagCount} 个`;
-  } else {
-    document.getElementById("giftDisplay").style.display = "block";
-    document.getElementById("giftContent").innerHTML = "📌 下单生肉商品即可获得附送Zip袋和礼袋";
-  }
-  
-  return { zipCount, giftBagCount };
-}
 
-// 计算总价和运费
-function calc() {
-  let total = 0;
-  let weight = 0;
-  
-  // 生肉计算
-  rawProducts.forEach((p, i) => {
-    let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
-    total += qty * p.price;
-    weight += qty * 24;
-  });
-  
-  // 熟肉计算
-  cookedProducts.forEach((p, i) => {
-    if (p.isFixed) {
-      let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
-      total += qty * p.price;
-      if (p.name.includes("肉松") || p.name.includes("Floss")) weight += qty * 0.2;
-      else if (p.name.includes("虾米卷") || p.name.includes("Spring Roll")) weight += qty * 0.22;
-      else if (p.name.includes("鸡蛋饼") || p.name.includes("Kuih Kapit")) weight += qty * 0.34;
-      else if (p.name.includes("鱼皮") || p.name.includes("Fish Skin")) weight += qty * 0.1;
+    ],
+
+    type:
+
+      "fixedBox"
+
+  },
+
+  {
+
+    id: "twoYolkDriedMeatBox",
+
+    name: "双黄＆肉干月饼礼盒",
+
+    en: "2 Yolk＆Dried Meat",
+
+    price: 89.90,
+
+    spec: "1盒4粒",
+
+    boxText:
+
+      "固定双黄白莲蓉、双黄金翡翠、白莲肉干肉松、翡翠肉干瓜子，各1粒，共4粒。不可选择口味。",
+
+    fixedFlavors: [
+
+      {
+
+        id: 22,
+
+        name: "双黄白莲蓉",
+
+        en: "White Lotus 2 Yolk",
+
+        qtyPerBox: 1
+
+      },
+
+      {
+
+        id: 21,
+
+        name: "双黄金翡翠",
+
+        en: "Pandan Golden 2 Yolk",
+
+        qtyPerBox: 1
+
+      },
+
+      {
+
+        id: 23,
+
+        name: "白莲肉干肉松",
+
+        en: "Lotus Dried Meat Pork Floss",
+
+        qtyPerBox: 1
+
+      },
+
+      {
+
+        id: 24,
+
+        name: "翡翠肉干瓜子",
+
+        en: "Pandan Dried Meat",
+
+        qtyPerBox: 1
+
+      }
+
+    ],
+
+    type:
+
+      "fixedBox"
+
+  },
+
+  {
+
+    id: "traditionalFlakyBox",
+
+    name: "烤皮＆酥皮月饼礼盒",
+
+    en: "Traditional＆Flaky Pastry Mooncake",
+
+    price: 52.45,
+
+    spec: "1盒4粒",
+
+    type:
+
+      "mixedBox"
+
+  },
+
+  {
+
+    id: 32,
+
+    key: "musangKing",
+
+    name: "冰皮猫山王",
+
+    en: "Musang King",
+
+    price: 78.00,
+
+    spec: "1盒6粒",
+
+    boxText:
+
+      "1组礼盒里有6粒月饼。不可选择口味。",
+
+    type:
+
+      "normal"
+
+  },
+
+  {
+
+    id: "snowSkinBox",
+
+    name: "冰皮月饼礼盒",
+
+    en: "Snow Skin Mooncake",
+
+    price: 56.95,
+
+    spec: "1盒4粒",
+
+    type:
+
+      "mixedBox"
+
+  }
+
+];
+
+
+
+// ============================================================
+
+// 烤皮＆酥皮月饼口味
+
+//
+
+// Inventory ID 14 - 20
+
+// ============================================================
+
+const traditionalFlakyFlavors = [
+
+  {
+
+    id: 14,
+
+    series:
+
+      "烤皮月饼",
+
+    name:
+
+      "金翡翠",
+
+    en:
+
+      "Pandan Golden"
+
+  },
+
+  {
+
+    id: 15,
+
+    series:
+
+      "烤皮月饼",
+
+    name:
+
+      "纯莲蓉",
+
+    en:
+
+      "Pure Lotus"
+
+  },
+
+  {
+
+    id: 16,
+
+    series:
+
+      "烤皮月饼",
+
+    name:
+
+      "玫瑰豆沙",
+
+    en:
+
+      "Rose Red Bean"
+
+  },
+
+  {
+
+    id: 17,
+
+    series:
+
+      "酥皮月饼",
+
+    name:
+
+      "竹炭黑芝麻",
+
+    en:
+
+      "Black Sesame"
+
+  },
+
+  {
+
+    id: 18,
+
+    series:
+
+      "酥皮月饼",
+
+    name:
+
+      "紫香芋莲蓉",
+
+    en:
+
+      "Yam Lotus"
+
+  },
+
+  {
+
+    id: 19,
+
+    series:
+
+      "酥皮月饼",
+
+    name:
+
+      "金巧苏香月",
+
+    en:
+
+      "Tiramisu"
+
+  },
+
+  {
+
+    id: 20,
+
+    series:
+
+      "酥皮月饼",
+
+    name:
+
+      "茉香乌龙茶",
+
+    en:
+
+      "Jasmine Oolong Tea"
+
+  }
+
+];
+
+// ============================================================
+
+// 冰皮月饼口味
+
+//
+
+// Inventory ID 25 - 28
+
+// ============================================================
+
+const snowSkinFlavors = [
+
+  {
+
+    id: 25,
+
+    name:
+
+      "养生黑芝麻",
+
+    en:
+
+      "Black Sesame"
+
+  },
+
+  {
+
+    id: 26,
+
+    name:
+
+      "金翡翠麻薯",
+
+    en:
+
+      "Pandan Golden Mochi"
+
+  },
+
+  {
+
+    id: 27,
+
+    name:
+
+      "茉莉乌龙茶",
+
+    en:
+
+      "Jasmine Oolong Tea"
+
+  },
+
+  {
+
+    id: 28,
+
+    name:
+
+      "芋头纯莲蓉",
+
+    en:
+
+      "Yam Pure Lotus"
+
+  }
+
+];
+
+// ============================================================
+
+// 肉干及零食产品
+
+//
+
+// 使用你现有 Inventory ID
+
+// ============================================================
+
+const jerkyProducts = [
+
+  {
+
+    id: 1,
+
+    name:
+
+      "猪肉碎肉干",
+
+    en:
+
+      "Pork Meat（Minced Meat）",
+
+    price:
+
+      45.00,
+
+    spec:
+
+      "500G｜1pkt"
+
+  },
+
+  {
+
+    id: 2,
+
+    name:
+
+      "猪肉碎肉干",
+
+    en:
+
+      "Pork Meat（Minced Meat）",
+
+    price:
+
+      90.00,
+
+    spec:
+
+      "1Kg｜1pkt"
+
+  },
+
+  {
+
+    id: 3,
+
+    name:
+
+      "鸡肉碎肉干",
+
+    en:
+
+      "Chicken Meat（Minced Meat）",
+
+    price:
+
+      45.00,
+
+    spec:
+
+      "500G｜1pkt"
+
+  },
+
+  {
+
+    id: 4,
+
+    name:
+
+      "鸡肉碎肉干",
+
+    en:
+
+      "Chicken Meat（Minced Meat）",
+
+    price:
+
+      90.00,
+
+    spec:
+
+      "1Kg｜1pkt"
+
+  },
+
+  {
+
+    id: 5,
+
+    name:
+
+      "切片肉干",
+
+    en:
+
+      "BBQ Sliced Pork Meat",
+
+    price:
+
+      60.00,
+
+    spec:
+
+      "500G｜1pkt"
+
+  },
+
+  {
+
+    id: 6,
+
+    name:
+
+      "切片肉干",
+
+    en:
+
+      "BBQ Sliced Pork Meat",
+
+    price:
+
+      120.00,
+
+    spec:
+
+      "1Kg｜1pkt"
+
+  },
+
+  {
+
+    id: 7,
+
+    name:
+
+      "帝王肉干",
+
+    en:
+
+      "Signature BBQ Bacon",
+
+    price:
+
+      90.00,
+
+    spec:
+
+      "500G｜1pkt"
+
+  },
+
+  {
+
+    id: 8,
+
+    name:
+
+      "帝王肉干",
+
+    en:
+
+      "Signature BBQ Bacon",
+
+    price:
+
+      180.00,
+
+    spec:
+
+      "1Kg｜1pkt"
+
+  },
+
+  {
+
+    id: 12,
+
+    name:
+
+      "咸蛋鱼皮",
+
+    en:
+
+      "Salted Egg Fish Skin",
+
+    price:
+
+      15.00,
+
+    spec:
+
+      "100G｜1pkt"
+
+  },
+
+  {
+
+    id: 13,
+
+    name:
+
+      "麻辣鱼皮",
+
+    en:
+
+      "Mala Fish Skin",
+
+    price:
+
+      15.00,
+
+    spec:
+
+      "100G｜1pkt"
+
+  }
+
+];
+  // ============================================================
+
+// 取得库存
+
+// ============================================================
+
+async function loadStock(id) {
+
+  try {
+
+    const response =
+
+      await fetch(
+
+        `${API_URL}?id=${id}`
+
+      );
+
+    const result =
+
+      await response.json();
+
+    if (
+
+      result.success
+
+    ) {
+
+      stocks[id] =
+
+        Number(
+
+          result.stock
+
+        ) || 0;
+
     } else {
-      let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
-      let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
-      total += qty500 * p.price500;
-      total += qty1kg * p.price1kg;
-      weight += qty500 * 0.5;
-      weight += qty1kg * 1;
+
+      stocks[id] =
+
+        0;
+
     }
-  });
-  
-  // 包装材料计算
-  packagingProducts.forEach((p, i) => {
-    let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
-    total += qty * p.price;
-  });
-  
-  // 运费计算
-  let ship = 0;
-  let delivery = document.getElementById("delivery").value;
-  if (delivery === "邮寄") {
-    if (weight <= 1) ship = 10;
-    else if (weight <= 3) ship = 15;
-    else if (weight <= 5) ship = 20;
-    else ship = 20 + Math.ceil((weight - 5) / 1) * 5;
+
+  } catch (error) {
+
+    console.error(
+
+      `库存加载失败 ID ${id}`,
+
+      error
+
+    );
+
+    stocks[id] =
+
+      0;
+
   }
-  
-  document.getElementById("productTotal").innerText = total.toFixed(2);
-  document.getElementById("shipping").innerText = ship.toFixed(2);
-  document.getElementById("total").innerText = (total + ship).toFixed(2);
-  
-  calculateFreeGifts();
+
 }
 
-// ========== 提交订单 ==========
+// ============================================================
+
+// 一次加载全部 Inventory 库存
+
+//
+
+// Inventory ID：1 - 33
+
+// ============================================================
+
+async function loadAllStocks() {
+
+  const stockIds = [];
+
+  for (
+
+    let id = 1;
+
+    id <= 33;
+
+    id++
+
+  ) {
+
+    stockIds.push(
+
+      id
+
+    );
+
+  }
+
+  await Promise.all(
+
+    stockIds.map(
+
+      function(id) {
+
+        return loadStock(
+
+          id
+
+        );
+
+      }
+
+    )
+
+  );
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 获取库存
+
+// ============================================================
+
+function getStock(id) {
+
+  if (
+
+    stocks[id] === undefined
+
+  ) {
+
+    return null;
+
+  }
+
+  return Number(
+
+    stocks[id]
+
+  ) || 0;
+
+}
+
+// ============================================================
+
+// 库存文字
+
+// ============================================================
+
+function getStockHTML(id) {
+
+  const stock =
+
+    getStock(id);
+
+  if (
+
+    stock === null
+
+  ) {
+
+    return `
+
+      <div
+
+        class="stock-text stock-loading"
+
+      >
+
+        库存加载中...
+
+      </div>
+
+    `;
+
+  }
+
+  if (
+
+    stock <= 0
+
+  ) {
+
+    return `
+
+      <div
+
+        class="stock-text stock-low"
+
+      >
+
+        库存不足
+
+      </div>
+
+    `;
+
+  }
+
+  return `
+
+    <div
+
+      class="stock-text stock-ok"
+
+    >
+
+      现有库存：${stock}
+
+    </div>
+
+  `;
+
+}
+
+// ============================================================
+
+// 自选口味库存文字
+
+// ============================================================
+
+function getFlavorStockHTML(id) {
+
+  const stock =
+
+    getStock(id);
+
+  if (
+
+    stock === null
+
+  ) {
+
+    return `
+
+      <div
+
+        class="flavor-stock stock-loading"
+
+      >
+
+        库存加载中...
+
+      </div>
+
+    `;
+
+  }
+
+  if (
+
+    stock <= 0
+
+  ) {
+
+    return `
+
+      <div
+
+        class="flavor-stock stock-low"
+
+      >
+
+        库存不足
+
+      </div>
+
+    `;
+
+  }
+
+  return `
+
+    <div
+
+      class="flavor-stock stock-ok"
+
+    >
+
+      库存：${stock}
+
+    </div>
+
+  `;
+
+}
+
+// ============================================================
+
+// 普通商品数量
+
+//
+
+// 用于：
+
+// 福满四季
+
+// 冰皮猫山王
+
+// 肉干
+
+// 零食
+
+// ============================================================
+
+function getQuantity(id) {
+
+  return (
+
+    Number(
+
+      quantities[id]
+
+    ) || 0
+
+  );
+
+}
+
+// ============================================================
+
+// 修改普通商品数量
+
+// ============================================================
+
+function changeQuantity(
+
+  id,
+
+  change
+
+) {
+
+  const currentQty =
+
+    getQuantity(
+
+      id
+
+    );
+
+  let newQty =
+
+    currentQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const stock =
+
+    getStock(id);
+
+  if (
+
+    change > 0 &&
+
+    stock !== null &&
+
+    newQty > stock
+
+  ) {
+
+    alert(
+
+      "库存不足"
+
+    );
+
+    return;
+
+  }
+
+  quantities[id] =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 渲染普通商品
+
+// ============================================================
+
+function renderNormalProduct(
+
+  product
+
+) {
+
+  const quantity =
+
+    getQuantity(
+
+      product.id
+
+    );
+
+  const stock =
+
+    getStock(
+
+      product.id
+
+    );
+
+  const canAdd =
+
+    stock === null ||
+
+    quantity < stock;
+
+  return `
+
+    <div
+
+      class="product-card"
+
+    >
+
+      <div
+
+        class="product-name"
+
+      >
+
+        ${product.name}
+
+      </div>
+
+      <div
+
+        class="product-en"
+
+      >
+
+        ${product.en}
+
+      </div>
+
+      <div
+
+        class="product-price"
+
+      >
+
+        RM${product.price.toFixed(2)}
+
+        / ${product.spec}
+
+      </div>
+
+      ${
+
+        product.boxText
+
+          ?
+
+          `
+
+            <div
+
+              class="product-desc"
+
+            >
+
+              ${product.boxText}
+
+            </div>
+
+          `
+
+          :
+
+          ""
+
+      }
+
+      ${getStockHTML(product.id)}
+
+      <div
+
+        class="quantity-row"
+
+      >
+
+        <div
+
+          class="quantity-title"
+
+        >
+
+          数量
+
+        </div>
+
+        <div
+
+          class="qty-control"
+
+        >
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeQuantity(${product.id}, -1)"
+
+          >
+
+            −
+
+          </button>
+
+          <div
+
+            class="qty-number"
+
+          >
+
+            ${quantity}
+
+          </div>
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeQuantity(${product.id}, 1)"
+
+            ${canAdd ? "" : "disabled"}
+
+          >
+
+            +
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+// ============================================================
+
+// 获取固定礼盒数量
+
+//
+
+// 固定礼盒本身使用文字 ID
+
+// ============================================================
+
+function getBoxQuantity(
+
+  boxId
+
+) {
+
+  return (
+
+    Number(
+
+      quantities[boxId]
+
+    ) || 0
+
+  );
+
+}
+
+// ============================================================
+
+// 计算固定礼盒最大可购买数量
+
+//
+
+// 例如蛋黄酥：
+
+// ID29 库存 ÷ 2
+
+// ID30 库存 ÷ 2
+
+// ID31 库存 ÷ 2
+
+//
+
+// 取最小值
+
+// ============================================================
+
+function getFixedBoxMaxQuantity(
+
+  product
+
+) {
+
+  let maxQty =
+
+    Infinity;
+
+  product.fixedFlavors.forEach(
+
+    function(flavor) {
+
+      const stock =
+
+        getStock(
+
+          flavor.id
+
+        );
+
+      if (
+
+        stock === null
+
+      ) {
+
+        return;
+
+      }
+
+      const flavorMax =
+
+        Math.floor(
+
+          stock /
+
+          flavor.qtyPerBox
+
+        );
+
+      if (
+
+        flavorMax <
+
+        maxQty
+
+      ) {
+
+        maxQty =
+
+          flavorMax;
+
+      }
+
+    }
+
+  );
+
+  if (
+
+    maxQty === Infinity
+
+  ) {
+
+    return 0;
+
+  }
+
+  return Math.max(
+
+    0,
+
+    maxQty
+
+  );
+
+}
+
+// ============================================================
+
+// 修改固定礼盒数量
+
+//
+
+// 自动根据固定口味库存检查
+
+// ============================================================
+
+function changeFixedBoxQuantity(
+
+  boxId,
+
+  change
+
+) {
+
+  const product =
+
+    midAutumnProducts.find(
+
+      function(item) {
+
+        return (
+
+          item.id === boxId
+
+        );
+
+      }
+
+    );
+
+  if (
+
+    !product
+
+  ) {
+
+    return;
+
+  }
+
+  const currentQty =
+
+    getBoxQuantity(
+
+      boxId
+
+    );
+
+  let newQty =
+
+    currentQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const maxQty =
+
+    getFixedBoxMaxQuantity(
+
+      product
+
+    );
+
+  if (
+
+    newQty >
+
+    maxQty
+
+  ) {
+
+    alert(
+
+      "库存不足，无法再增加礼盒数量"
+
+    );
+
+    return;
+
+  }
+
+  quantities[boxId] =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+  // ============================================================
+
+// 渲染固定礼盒
+
+//
+
+// 用于：
+
+// 蛋黄酥
+
+// 双黄＆肉干月饼礼盒
+
+// ============================================================
+
+function renderFixedBox(
+
+  product
+
+) {
+
+  const quantity =
+
+    getBoxQuantity(
+
+      product.id
+
+    );
+
+  const maxQty =
+
+    getFixedBoxMaxQuantity(
+
+      product
+
+    );
+
+  let flavorsHTML =
+
+    "";
+
+  product.fixedFlavors.forEach(
+
+    function(flavor) {
+
+      flavorsHTML += `
+
+        <div
+
+          class="flavor-line"
+
+        >
+
+          - ${flavor.name}
+
+          ${flavor.en}
+
+          × ${flavor.qtyPerBox}
+
+          / 盒
+
+        </div>
+
+        ${getFlavorStockHTML(flavor.id)}
+
+      `;
+
+    }
+
+  );
+
+  return `
+
+    <div
+
+      class="product-card"
+
+    >
+
+      <div
+
+        class="product-name"
+
+      >
+
+        ${product.name}
+
+      </div>
+
+      <div
+
+        class="product-en"
+
+      >
+
+        ${product.en}
+
+      </div>
+
+      <div
+
+        class="product-price"
+
+      >
+
+        RM${product.price.toFixed(2)}
+
+        / ${product.spec}
+
+      </div>
+
+      <div
+
+        class="product-desc"
+
+      >
+
+        ${product.boxText}
+
+      </div>
+
+      <div
+
+        class="product-flavors"
+
+      >
+
+        ${flavorsHTML}
+
+      </div>
+
+      <div
+
+        class="quantity-row"
+
+      >
+
+        <div
+
+          class="quantity-title"
+
+        >
+
+          礼盒数量
+
+        </div>
+
+        <div
+
+          class="qty-control"
+
+        >
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeFixedBoxQuantity('${product.id}', -1)"
+
+          >
+
+            −
+
+          </button>
+
+          <div
+
+            class="qty-number"
+
+          >
+
+            ${quantity}
+
+          </div>
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeFixedBoxQuantity('${product.id}', 1)"
+
+            ${
+
+              quantity >= maxQty
+
+                ? "disabled"
+
+                : ""
+
+            }
+
+          >
+
+            +
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+// ============================================================
+
+// 获取烤皮＆酥皮礼盒口味总数量
+
+// ============================================================
+
+function getTraditionalFlakySelectedCount() {
+
+  let total =
+
+    0;
+
+  traditionalFlakyFlavors.forEach(
+
+    function(flavor) {
+
+      total +=
+
+        Number(
+
+          traditionalFlakyFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+    }
+
+  );
+
+  return total;
+
+}
+
+// ============================================================
+
+// 修改烤皮＆酥皮礼盒数量
+
+//
+
+// 每增加1组礼盒
+
+// 必须再选择4粒口味
+
+// ============================================================
+
+function changeTraditionalFlakyBoxQty(
+
+  change
+
+) {
+
+  let newQty =
+
+    traditionalFlakyBoxQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const selectedCount =
+
+    getTraditionalFlakySelectedCount();
+
+  if (
+
+    newQty * 4 <
+
+    selectedCount
+
+  ) {
+
+    alert(
+
+      "请先减少口味数量，再减少礼盒数量"
+
+    );
+
+    return;
+
+  }
+
+  traditionalFlakyBoxQty =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 修改烤皮＆酥皮口味数量
+
+// ============================================================
+
+function changeTraditionalFlakyFlavorQty(
+
+  id,
+
+  change
+
+) {
+
+  const currentQty =
+
+    Number(
+
+      traditionalFlakyFlavorQty[id]
+
+    ) || 0;
+
+  let newQty =
+
+    currentQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const stock =
+
+    getStock(id);
+
+  if (
+
+    change > 0
+
+  ) {
+
+    const totalSelected =
+
+      getTraditionalFlakySelectedCount();
+
+    const maxAllowed =
+
+      traditionalFlakyBoxQty *
+
+      4;
+
+    if (
+
+      traditionalFlakyBoxQty <= 0
+
+    ) {
+
+      alert(
+
+        "请先选择礼盒数量"
+
+      );
+
+      return;
+
+    }
+
+    if (
+
+      totalSelected >=
+
+      maxAllowed
+
+    ) {
+
+      alert(
+
+        `当前已选择${maxAllowed}粒，请增加礼盒数量后再选择`
+
+      );
+
+      return;
+
+    }
+
+    if (
+
+      stock !== null &&
+
+      newQty > stock
+
+    ) {
+
+      alert(
+
+        "该口味库存不足"
+
+      );
+
+      return;
+
+    }
+
+  }
+
+  traditionalFlakyFlavorQty[id] =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+  // ============================================================
+
+// 渲染烤皮＆酥皮月饼礼盒
+
+//
+
+// 1组礼盒 = 必须选择4粒
+
+// 2组礼盒 = 必须选择8粒
+
+// 可以不同口味，也可以全部同一种口味
+
+// ============================================================
+
+function renderTraditionalFlakyBox() {
+
+  const selectedCount =
+
+    getTraditionalFlakySelectedCount();
+
+  const requiredCount =
+
+    traditionalFlakyBoxQty *
+
+    4;
+
+  let flavorsHTML =
+
+    "";
+
+  traditionalFlakyFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          traditionalFlakyFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      const stock =
+
+        getStock(
+
+          flavor.id
+
+        );
+
+      const canAdd =
+
+        stock === null ||
+
+        qty < stock;
+
+      flavorsHTML += `
+
+        <div
+
+          class="flavor-item"
+
+        >
+
+          <div>
+
+            <div
+
+              class="flavor-name"
+
+            >
+
+              ${flavor.series}｜
+
+              ${flavor.name}
+
+            </div>
+
+            <div
+
+              class="flavor-en"
+
+            >
+
+              ${flavor.en}
+
+            </div>
+
+            ${getFlavorStockHTML(flavor.id)}
+
+          </div>
+
+          <div
+
+            class="flavor-qty-control"
+
+          >
+
+            <button
+
+              class="qty-btn"
+
+              type="button"
+
+              onclick="changeTraditionalFlakyFlavorQty(${flavor.id}, -1)"
+
+              ${qty <= 0 ? "disabled" : ""}
+
+            >
+
+              −
+
+            </button>
+
+            <div
+
+              class="qty-number"
+
+            >
+
+              ${qty}
+
+            </div>
+
+            <button
+
+              class="qty-btn"
+
+              type="button"
+
+              onclick="changeTraditionalFlakyFlavorQty(${flavor.id}, 1)"
+
+              ${
+
+                !canAdd ||
+
+                traditionalFlakyBoxQty <= 0 ||
+
+                selectedCount >= requiredCount
+
+                  ? "disabled"
+
+                  : ""
+
+              }
+
+            >
+
+              +
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  );
+
+  const isComplete =
+
+    traditionalFlakyBoxQty === 0 ||
+
+    selectedCount === requiredCount;
+
+  let statusHTML =
+
+    "";
+
+  if (
+
+    traditionalFlakyBoxQty > 0
+
+  ) {
+
+    if (
+
+      selectedCount === requiredCount
+
+    ) {
+
+      statusHTML = `
+
+        <div
+
+          class="stock-text stock-ok"
+
+        >
+
+          已完成选择：
+
+          ${selectedCount} / ${requiredCount} 粒
+
+        </div>
+
+      `;
+
+    } else {
+
+      statusHTML = `
+
+        <div
+
+          class="warning-box"
+
+        >
+
+          已选择
+
+          ${selectedCount}
+
+          / ${requiredCount}
+
+          粒。
+
+          每1组礼盒必须选择4粒月饼。
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  return `
+
+    <div
+
+      class="product-card"
+
+    >
+
+      <div
+
+        class="product-name"
+
+      >
+
+        烤皮＆酥皮月饼礼盒
+
+      </div>
+
+      <div
+
+        class="product-en"
+
+      >
+
+        Traditional＆Flaky Pastry Mooncake
+
+      </div>
+
+      <div
+
+        class="product-price"
+
+      >
+
+        RM69.90 / 1盒4粒
+
+      </div>
+
+      <div
+
+        class="product-desc"
+
+      >
+
+        烤皮月饼和酥皮月饼可自由混搭。
+
+        每1组礼盒必须选择刚好4粒。
+
+        可以选择4个不同口味，也可以选择4个相同口味。
+
+      </div>
+
+      <div
+
+        class="quantity-row"
+
+      >
+
+        <div
+
+          class="quantity-title"
+
+        >
+
+          礼盒数量
+
+        </div>
+
+        <div
+
+          class="qty-control"
+
+        >
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeTraditionalFlakyBoxQty(-1)"
+
+            ${
+
+              traditionalFlakyBoxQty <= 0
+
+                ? "disabled"
+
+                : ""
+
+            }
+
+          >
+
+            −
+
+          </button>
+
+          <div
+
+            class="qty-number"
+
+          >
+
+            ${traditionalFlakyBoxQty}
+
+          </div>
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeTraditionalFlakyBoxQty(1)"
+
+          >
+
+            +
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+
+        class="mix-box"
+
+      >
+
+        <div
+
+          class="mix-info"
+
+        >
+
+          请选择月饼口味。
+
+          <br>
+
+          1组礼盒 = 4粒
+
+          <br>
+
+          2组礼盒 = 8粒
+
+          <br>
+
+          以此类推。
+
+        </div>
+
+        <div
+
+          class="mix-count"
+
+        >
+
+          已选择：
+
+          ${selectedCount}
+
+          /
+
+          ${requiredCount}
+
+          粒
+
+        </div>
+
+        ${flavorsHTML}
+
+        ${statusHTML}
+
+      </div>
+
+      ${
+
+        traditionalFlakyBoxQty > 0 &&
+
+        !isComplete
+
+          ?
+
+          `
+
+            <div
+
+              class="error-box"
+
+            >
+
+              必须选择刚好
+
+              ${requiredCount}
+
+              粒月饼，
+
+              才可以提交订单。
+
+            </div>
+
+          `
+
+          :
+
+          ""
+
+      }
+
+    </div>
+
+  `;
+
+}
+
+// ============================================================
+
+// 获取冰皮月饼已选择总数量
+
+// ============================================================
+
+function getSnowSkinSelectedCount() {
+
+  let total =
+
+    0;
+
+  snowSkinFlavors.forEach(
+
+    function(flavor) {
+
+      total +=
+
+        Number(
+
+          snowSkinFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+    }
+
+  );
+
+  return total;
+
+}
+
+// ============================================================
+
+// 修改冰皮月饼礼盒数量
+
+//
+
+// 每减少1组礼盒，
+
+// 如果当前选择的月饼数量超过新的需求数量，
+
+// 必须先减少口味数量。
+
+// ============================================================
+
+function changeSnowSkinBoxQty(
+
+  change
+
+) {
+
+  let newQty =
+
+    snowSkinBoxQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const selectedCount =
+
+    getSnowSkinSelectedCount();
+
+  if (
+
+    selectedCount >
+
+    newQty * 4
+
+  ) {
+
+    alert(
+
+      "请先减少口味数量，再减少礼盒数量"
+
+    );
+
+    return;
+
+  }
+
+  snowSkinBoxQty =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 修改冰皮月饼口味数量
+
+// ============================================================
+
+function changeSnowSkinFlavorQty(
+
+  id,
+
+  change
+
+) {
+
+  const currentQty =
+
+    Number(
+
+      snowSkinFlavorQty[id]
+
+    ) || 0;
+
+  let newQty =
+
+    currentQty +
+
+    Number(change);
+
+  if (
+
+    newQty < 0
+
+  ) {
+
+    newQty = 0;
+
+  }
+
+  const stock =
+
+    getStock(id);
+
+  if (
+
+    change > 0
+
+  ) {
+
+    const totalSelected =
+
+      getSnowSkinSelectedCount();
+
+    const maxAllowed =
+
+      snowSkinBoxQty *
+
+      4;
+
+    if (
+
+      snowSkinBoxQty <= 0
+
+    ) {
+
+      alert(
+
+        "请先选择礼盒数量"
+
+      );
+
+      return;
+
+    }
+
+    if (
+
+      totalSelected >=
+
+      maxAllowed
+
+    ) {
+
+      alert(
+
+        `当前已选择${maxAllowed}粒，请增加礼盒数量后再选择`
+
+      );
+
+      return;
+
+    }
+
+    if (
+
+      stock !== null &&
+
+      newQty > stock
+
+    ) {
+
+      alert(
+
+        "该口味库存不足"
+
+      );
+
+      return;
+
+    }
+
+  }
+
+  snowSkinFlavorQty[id] =
+
+    newQty;
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 渲染冰皮月饼礼盒
+
+//
+
+// 1组礼盒 = 4粒
+
+// 2组礼盒 = 8粒
+
+// 可以不同口味，也可以全部同一种口味
+
+// ============================================================
+
+function renderSnowSkinBox() {
+
+  const selectedCount =
+
+    getSnowSkinSelectedCount();
+
+  const requiredCount =
+
+    snowSkinBoxQty *
+
+    4;
+
+  let flavorsHTML =
+
+    "";
+
+  snowSkinFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          snowSkinFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      const stock =
+
+        getStock(
+
+          flavor.id
+
+        );
+
+      const canAdd =
+
+        stock === null ||
+
+        qty < stock;
+
+      flavorsHTML += `
+
+        <div
+
+          class="flavor-item"
+
+        >
+
+          <div>
+
+            <div
+
+              class="flavor-name"
+
+            >
+
+              ${flavor.name}
+
+            </div>
+
+            <div
+
+              class="flavor-en"
+
+            >
+
+              ${flavor.en}
+
+            </div>
+
+            ${getFlavorStockHTML(flavor.id)}
+
+          </div>
+
+          <div
+
+            class="flavor-qty-control"
+
+          >
+
+            <button
+
+              class="qty-btn"
+
+              type="button"
+
+              onclick="changeSnowSkinFlavorQty(${flavor.id}, -1)"
+
+              ${qty <= 0 ? "disabled" : ""}
+
+            >
+
+              −
+
+            </button>
+
+            <div
+
+              class="qty-number"
+
+            >
+
+              ${qty}
+
+            </div>
+
+            <button
+
+              class="qty-btn"
+
+              type="button"
+
+              onclick="changeSnowSkinFlavorQty(${flavor.id}, 1)"
+
+              ${
+
+                !canAdd ||
+
+                snowSkinBoxQty <= 0 ||
+
+                selectedCount >= requiredCount
+
+                  ? "disabled"
+
+                  : ""
+
+              }
+
+            >
+
+              +
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  );
+
+  let statusHTML =
+
+    "";
+
+  if (
+
+    snowSkinBoxQty > 0
+
+  ) {
+
+    if (
+
+      selectedCount === requiredCount
+
+    ) {
+
+      statusHTML = `
+
+        <div
+
+          class="stock-text stock-ok"
+
+        >
+
+          已完成选择：
+
+          ${selectedCount} / ${requiredCount} 粒
+
+        </div>
+
+      `;
+
+    } else {
+
+      statusHTML = `
+
+        <div
+
+          class="warning-box"
+
+        >
+
+          已选择
+
+          ${selectedCount}
+
+          / ${requiredCount}
+
+          粒。
+
+          每1组礼盒必须选择4粒月饼。
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  return `
+
+    <div
+
+      class="product-card"
+
+    >
+
+      <div
+
+        class="product-name"
+
+      >
+
+        冰皮月饼礼盒
+
+      </div>
+
+      <div
+
+        class="product-en"
+
+      >
+
+        Snow Skin Mooncake
+
+      </div>
+
+      <div
+
+        class="product-price"
+
+      >
+
+        RM75.90 / 1盒4粒
+
+      </div>
+
+      <div
+
+        class="product-desc"
+
+      >
+
+        可自由选择口味。
+
+        每1组礼盒必须选择刚好4粒。
+
+        可以选择4个不同口味，也可以选择4个相同口味。
+
+      </div>
+
+      <div
+
+        class="quantity-row"
+
+      >
+
+        <div
+
+          class="quantity-title"
+
+        >
+
+          礼盒数量
+
+        </div>
+
+        <div
+
+          class="qty-control"
+
+        >
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeSnowSkinBoxQty(-1)"
+
+            ${
+
+              snowSkinBoxQty <= 0
+
+                ? "disabled"
+
+                : ""
+
+            }
+
+          >
+
+            −
+
+          </button>
+
+          <div
+
+            class="qty-number"
+
+          >
+
+            ${snowSkinBoxQty}
+
+          </div>
+
+          <button
+
+            class="qty-btn"
+
+            type="button"
+
+            onclick="changeSnowSkinBoxQty(1)"
+
+          >
+
+            +
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+
+        class="mix-box"
+
+      >
+
+        <div
+
+          class="mix-info"
+
+        >
+
+          请选择冰皮月饼口味。
+
+          <br>
+
+          1组礼盒 = 4粒
+
+          <br>
+
+          2组礼盒 = 8粒
+
+          <br>
+
+          以此类推。
+
+        </div>
+
+        <div
+
+          class="mix-count"
+
+        >
+
+          已选择：
+
+          ${selectedCount}
+
+          /
+
+          ${requiredCount}
+
+          粒
+
+        </div>
+
+        ${flavorsHTML}
+
+        ${statusHTML}
+
+      </div>
+
+      ${
+
+        snowSkinBoxQty > 0 &&
+
+        selectedCount !== requiredCount
+
+          ?
+
+          `
+
+            <div
+
+              class="error-box"
+
+            >
+
+              必须选择刚好
+
+              ${requiredCount}
+
+              粒冰皮月饼，
+
+              才可以提交订单。
+
+            </div>
+
+          `
+
+          :
+
+          ""
+
+      }
+
+    </div>
+
+  `;
+
+}
+  // ============================================================
+
+// 渲染全部中秋产品
+
+// ============================================================
+
+function renderMidAutumnProducts() {
+
+  const container =
+
+    document.getElementById(
+
+      "midAutumnProductList"
+
+    );
+
+  if (!container) {
+
+    return;
+
+  }
+
+  let html =
+
+    "";
+
+  midAutumnProducts.forEach(
+
+    function(product) {
+
+      if (
+
+        product.type === "normal"
+
+      ) {
+
+        html +=
+
+          renderNormalProduct(
+
+            product
+
+          );
+
+      }
+
+      if (
+
+        product.type === "fixedBox"
+
+      ) {
+
+        html +=
+
+          renderFixedBox(
+
+            product
+
+          );
+
+      }
+
+      if (
+
+        product.id ===
+
+        "traditionalFlakyBox"
+
+      ) {
+
+        html +=
+
+          renderTraditionalFlakyBox();
+
+      }
+
+      if (
+
+        product.id ===
+
+        "snowSkinBox"
+
+      ) {
+
+        html +=
+
+          renderSnowSkinBox();
+
+      }
+
+    }
+
+  );
+
+  container.innerHTML =
+
+    html;
+
+}
+
+// ============================================================
+
+// 渲染肉干及零食产品
+
+// ============================================================
+
+function renderJerkyProducts() {
+
+  const container =
+
+    document.getElementById(
+
+      "jerkyProductList"
+
+    );
+
+  if (!container) {
+
+    return;
+
+  }
+
+  let html =
+
+    "";
+
+  jerkyProducts.forEach(
+
+    function(product) {
+
+      html +=
+
+        renderNormalProduct(
+
+          product
+
+        );
+
+    }
+
+  );
+
+  container.innerHTML =
+
+    html;
+
+}
+
+// ============================================================
+
+// 渲染所有商品
+
+// ============================================================
+
+function renderAllProducts() {
+
+  renderMidAutumnProducts();
+
+  renderJerkyProducts();
+
+}
+
+// ============================================================
+
+// 计算普通商品金额
+
+// ============================================================
+
+function getNormalProductTotal() {
+
+  let total =
+
+    0;
+
+  midAutumnProducts.forEach(
+
+    function(product) {
+
+      if (
+
+        product.type === "normal"
+
+      ) {
+
+        const qty =
+
+          getQuantity(
+
+            product.id
+
+          );
+
+        total +=
+
+          qty *
+
+          product.price;
+
+      }
+
+    }
+
+  );
+
+  jerkyProducts.forEach(
+
+    function(product) {
+
+      const qty =
+
+        getQuantity(
+
+          product.id
+
+        );
+
+      total +=
+
+        qty *
+
+        product.price;
+
+    }
+
+  );
+
+  return total;
+
+}
+
+
+
+
+
+// ============================================================
+
+// 计算蛋黄酥礼盒金额
+
+// ============================================================
+
+function getEggYolkPastryTotal() {
+
+  const product =
+
+    midAutumnProducts.find(
+
+      function(item) {
+
+        return (
+
+          item.id ===
+
+          "eggYolkPastryBox"
+
+        );
+
+      }
+
+    );
+
+  if (!product) {
+
+    return 0;
+
+  }
+
+  const qty =
+
+    getBoxQuantity(
+
+      "eggYolkPastryBox"
+
+    );
+
+  return (
+
+    qty *
+
+    product.price
+
+  );
+
+}
+
+// ============================================================
+
+// 计算双黄＆肉干月饼礼盒金额
+
+// ============================================================
+
+function getTwoYolkDriedMeatTotal() {
+
+  const product =
+
+    midAutumnProducts.find(
+
+      function(item) {
+
+        return (
+
+          item.id ===
+
+          "twoYolkDriedMeatBox"
+
+        );
+
+      }
+
+    );
+
+  if (!product) {
+
+    return 0;
+
+  }
+
+  const qty =
+
+    getBoxQuantity(
+
+      "twoYolkDriedMeatBox"
+
+    );
+
+  return (
+
+    qty *
+
+    product.price
+
+  );
+
+}
+
+// ============================================================
+
+// 计算烤皮＆酥皮月饼礼盒金额
+
+// ============================================================
+
+function getTraditionalFlakyTotal() {
+
+  return (
+
+    traditionalFlakyBoxQty *
+
+    69.90
+
+  );
+
+}
+
+// ============================================================
+
+// 计算冰皮月饼礼盒金额
+
+// ============================================================
+
+function getSnowSkinTotal() {
+
+  return (
+
+    snowSkinBoxQty *
+
+    75.90
+
+  );
+
+}
+
+// ============================================================
+
+// 计算全部商品金额
+
+// ============================================================
+
+function getProductTotal() {
+
+  let total =
+
+    0;
+
+  total +=
+
+    getNormalProductTotal();
+
+  total +=
+
+    getEggYolkPastryTotal();
+
+  total +=
+
+    getTwoYolkDriedMeatTotal();
+
+  total +=
+
+    getTraditionalFlakyTotal();
+
+  total +=
+
+    getSnowSkinTotal();
+
+  return total;
+
+}
+
+// ============================================================
+
+// 计算订单中的商品数量
+
+//
+
+// 邮费逻辑：
+
+// 第一件商品 RM10
+
+// 后续每增加一件商品 RM3
+
+//
+
+// 这里每一盒 / 每一包 / 每一个普通商品
+
+// 都算作一件商品。
+
+// ============================================================
+
+function getShippingItemCount() {
+
+  let count =
+
+    0;
+
+  // ------------------------
+
+  // 普通中秋产品
+
+  // ------------------------
+
+  midAutumnProducts.forEach(
+
+    function(product) {
+
+      if (
+
+        product.type === "normal"
+
+      ) {
+
+        count +=
+
+          getQuantity(
+
+            product.id
+
+          );
+
+      }
+
+    }
+
+  );
+
+  // ------------------------
+
+  // 蛋黄酥礼盒
+
+  // ------------------------
+
+  count +=
+
+    getBoxQuantity(
+
+      "eggYolkPastryBox"
+
+    );
+
+  // ------------------------
+
+  // 双黄＆肉干礼盒
+
+  // ------------------------
+
+  count +=
+
+    getBoxQuantity(
+
+      "twoYolkDriedMeatBox"
+
+    );
+
+  // ------------------------
+
+  // 烤皮＆酥皮礼盒
+
+  // ------------------------
+
+  count +=
+
+    traditionalFlakyBoxQty;
+
+  // ------------------------
+
+  // 冰皮月饼礼盒
+
+  // ------------------------
+
+  count +=
+
+    snowSkinBoxQty;
+
+  // ------------------------
+
+  // 肉干及零食
+
+  // ------------------------
+
+  jerkyProducts.forEach(
+
+    function(product) {
+
+      count +=
+
+        getQuantity(
+
+          product.id
+
+        );
+
+    }
+
+  );
+
+  return count;
+
+}
+
+// ============================================================
+
+// 计算邮费
+
+//
+
+// 自取 = RM0
+
+//
+
+// 邮寄：
+
+// 0样商品 = RM0
+
+// 1样商品 = RM10
+
+// 第2样开始 = 每样 RM3
+
+// ============================================================
+
+function getShippingFee() {
+
+  const delivery =
+
+    document.getElementById(
+
+      "delivery"
+
+    )?.value;
+
+  if (
+
+    delivery !==
+
+    "shipping"
+
+  ) {
+
+    return 0;
+
+  }
+
+  const itemCount =
+
+    getShippingItemCount();
+
+  if (
+
+    itemCount <= 0
+
+  ) {
+
+    return 0;
+
+  }
+
+  if (
+
+    itemCount === 1
+
+  ) {
+
+    return 10;
+
+  }
+
+  return (
+
+    10 +
+
+    (
+
+      (itemCount - 1) *
+
+      3
+
+    )
+
+  );
+
+}
+
+
+
+// ============================================================
+
+// 处理配送方式变化
+
+// ============================================================
+
+function handleDeliveryChange() {
+
+  calculateAll();
+
+}
+
+// ============================================================
+
+// 实时更新金额
+
+// ============================================================
+
+function calculateAll() {
+
+  const productTotal =
+
+    getProductTotal();
+
+  const shippingFee =
+
+    getShippingFee();
+
+  const grandTotal =
+
+    productTotal +
+
+    shippingFee;
+
+  const productTotalElement =
+
+    document.getElementById(
+
+      "productTotal"
+
+    );
+
+  const shippingFeeElement =
+
+    document.getElementById(
+
+      "shippingFee"
+
+    );
+
+  const grandTotalElement =
+
+    document.getElementById(
+
+      "grandTotal"
+
+    );
+
+  if (
+
+    productTotalElement
+
+  ) {
+
+    productTotalElement.textContent =
+
+      `RM${productTotal.toFixed(2)}`;
+
+  }
+
+  if (
+
+    shippingFeeElement
+
+  ) {
+
+    shippingFeeElement.textContent =
+
+      `RM${shippingFee.toFixed(2)}`;
+
+  }
+
+  if (
+
+    grandTotalElement
+
+  ) {
+
+    grandTotalElement.textContent =
+
+      `RM${grandTotal.toFixed(2)}`;
+
+  }
+
+}
+
+// ============================================================
+
+// 页面加载完成后
+
+//
+
+// 读取 Inventory ID 1 - 33
+
+// ============================================================
+
+document.addEventListener(
+
+  "DOMContentLoaded",
+
+  function() {
+
+    loadAllStocks();
+
+  }
+
+);
+  // ============================================================
+
+// 检查自选礼盒是否完成
+
+// ============================================================
+
+function validateMixedBoxes() {
+
+  // ------------------------
+
+  // 烤皮＆酥皮礼盒
+
+  // ------------------------
+
+  if (
+
+    traditionalFlakyBoxQty > 0
+
+  ) {
+
+    const selected =
+
+      getTraditionalFlakySelectedCount();
+
+    const required =
+
+      traditionalFlakyBoxQty *
+
+      4;
+
+    if (
+
+      selected !== required
+
+    ) {
+
+      return {
+
+        success: false,
+
+        message:
+
+          `烤皮＆酥皮月饼礼盒必须选择刚好${required}粒月饼`
+
+      };
+
+    }
+
+  }
+
+  // ------------------------
+
+  // 冰皮月饼礼盒
+
+  // ------------------------
+
+  if (
+
+    snowSkinBoxQty > 0
+
+  ) {
+
+    const selected =
+
+      getSnowSkinSelectedCount();
+
+    const required =
+
+      snowSkinBoxQty *
+
+      4;
+
+    if (
+
+      selected !== required
+
+    ) {
+
+      return {
+
+        success: false,
+
+        message:
+
+          `冰皮月饼礼盒必须选择刚好${required}粒月饼`
+
+      };
+
+    }
+
+  }
+
+  return {
+
+    success: true
+
+  };
+
+}
+
+// ============================================================
+
+// 提交前检查库存
+
+//
+
+// 这里会按照每一个 Inventory ID
+
+// 重新计算实际需要扣除的数量。
+
+// ============================================================
+
+function getRequiredStock() {
+
+  const required =
+
+    {};
+
+  function addStock(
+
+    id,
+
+    qty
+
+  ) {
+
+    if (
+
+      !required[id]
+
+    ) {
+
+      required[id] =
+
+        0;
+
+    }
+
+    required[id] +=
+
+      Number(qty) || 0;
+
+  }
+
+  // ==========================================================
+
+  // 福满四季
+
+  // ==========================================================
+
+  addStock(
+
+    33,
+
+    getQuantity(33)
+
+  );
+
+  // ==========================================================
+
+  // 蛋黄酥
+
+  //
+
+  // 每盒：
+
+  // ID 29 × 2
+
+  // ID 30 × 2
+
+  // ID 31 × 2
+
+  // ==========================================================
+
+  const eggQty =
+
+    getBoxQuantity(
+
+      "eggYolkPastryBox"
+
+    );
+
+  if (
+
+    eggQty > 0
+
+  ) {
+
+    addStock(
+
+      29,
+
+      eggQty * 2
+
+    );
+
+    addStock(
+
+      30,
+
+      eggQty * 2
+
+    );
+
+    addStock(
+
+      31,
+
+      eggQty * 2
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 双黄＆肉干月饼
+
+  //
+
+  // 每盒：
+
+  // ID 21 × 1
+
+  // ID 22 × 1
+
+  // ID 23 × 1
+
+  // ID 24 × 1
+
+  // ==========================================================
+
+  const twoYolkQty =
+
+    getBoxQuantity(
+
+      "twoYolkDriedMeatBox"
+
+    );
+
+  if (
+
+    twoYolkQty > 0
+
+  ) {
+
+    addStock(
+
+      21,
+
+      twoYolkQty
+
+    );
+
+    addStock(
+
+      22,
+
+      twoYolkQty
+
+    );
+
+    addStock(
+
+      23,
+
+      twoYolkQty
+
+    );
+
+    addStock(
+
+      24,
+
+      twoYolkQty
+
+    );
+
+  }
+
+ // ==========================================================
+
+  // 烤皮＆酥皮月饼
+
+  //
+
+  // 根据顾客实际选择数量扣除
+
+  // ID 14 - 20
+
+  // ==========================================================
+
+  traditionalFlakyFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          traditionalFlakyFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addStock(
+
+          flavor.id,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  // ==========================================================
+
+  // 冰皮猫山王
+
+  // ==========================================================
+
+  addStock(
+
+    32,
+
+    getQuantity(32)
+
+  );
+
+  // ==========================================================
+
+  // 冰皮月饼
+
+  //
+
+  // 根据顾客实际选择数量扣除
+
+  // ID 25 - 28
+
+  // ==========================================================
+
+  snowSkinFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          snowSkinFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addStock(
+
+          flavor.id,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  // ==========================================================
+
+  // 肉干及零食
+
+  // ==========================================================
+
+  jerkyProducts.forEach(
+
+    function(product) {
+
+      const qty =
+
+        getQuantity(
+
+          product.id
+
+        );
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addStock(
+
+          product.id,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  return required;
+
+}
+
+// ============================================================
+
+// 前端再次检查库存
+
+// ============================================================
+
+function validateStock() {
+
+  const required =
+
+    getRequiredStock();
+
+  for (
+
+    const id in required
+
+  ) {
+
+    const needed =
+
+      required[id];
+
+    const available =
+
+      getStock(
+
+        Number(id)
+
+      );
+
+    if (
+
+      available === null
+
+    ) {
+
+      return {
+
+        success: false,
+
+        message:
+
+          "库存尚未加载完成，请稍后再试"
+
+      };
+
+    }
+
+    if (
+
+      needed > available
+
+    ) {
+
+      return {
+
+        success: false,
+
+        message:
+
+          `库存不足：商品 ID ${id}`
+
+      };
+
+    }
+
+  }
+
+  return {
+
+    success: true
+
+  };
+
+}
+
+// ============================================================
+
+// 整理提交到 Google Apps Script 的 products
+
+//
+
+// 每一个库存 ID 都独立提交
+
+// ============================================================
+
+function buildOrderProducts() {
+
+  const products =
+
+    [];
+
+  function addProduct(
+
+    id,
+
+    name,
+
+    qty
+
+  ) {
+
+    if (
+
+      qty <= 0
+
+    ) {
+
+      return;
+
+    }
+
+    products.push(
+
+      {
+
+        id: Number(id),
+
+        name: name,
+
+        qty: Number(qty)
+
+      }
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 福满四季
+
+  // ==========================================================
+
+  const fuQty =
+
+    getQuantity(33);
+
+  if (
+
+    fuQty > 0
+
+  ) {
+
+    addProduct(
+
+      33,
+
+      "福满四季 Fu Man Season",
+
+      fuQty
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 蛋黄酥
+
+  // ==========================================================
+
+  const eggQty =
+
+    getBoxQuantity(
+
+      "eggYolkPastryBox"
+
+    );
+
+  if (
+
+    eggQty > 0
+
+  ) {
+
+    addProduct(
+
+      29,
+
+      "蛋黄酥白莲肉干肉松 Lotus Dried Meat Pork Floss",
+
+      eggQty * 2
+
+    );
+
+    addProduct(
+
+      30,
+
+      "蛋黄酥翡翠肉松麻薯 Pandan Pork Floss Mochi",
+
+      eggQty * 2
+
+    );
+
+    addProduct(
+
+      31,
+
+      "蛋黄酥养生黑芝麻 Black Sesame",
+
+      eggQty * 2
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 双黄＆肉干月饼
+
+  // ==========================================================
+
+  const twoYolkQty =
+
+    getBoxQuantity(
+
+      "twoYolkDriedMeatBox"
+
+    );
+
+  if (
+
+    twoYolkQty > 0
+
+  ) {
+
+    addProduct(
+
+      21,
+
+      "双黄金翡翠 2 Yolk Pandan Golden",
+
+      twoYolkQty
+
+    );
+
+    addProduct(
+
+      22,
+
+      "双黄白莲蓉 2 Yolk White Lotus",
+
+      twoYolkQty
+
+    );
+
+    addProduct(
+
+      23,
+
+      "白莲肉干肉松 Lotus Dried Meat Pork Floss",
+
+      twoYolkQty
+
+    );
+
+    addProduct(
+
+      24,
+
+      "翡翠肉干瓜子 Pandan Dried Meat",
+
+      twoYolkQty
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 烤皮＆酥皮月饼
+
+  // ==========================================================
+
+  traditionalFlakyFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          traditionalFlakyFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addProduct(
+
+          flavor.id,
+
+          `${flavor.name} ${flavor.en}`,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  // ==========================================================
+
+  // 冰皮猫山王
+
+  // ==========================================================
+
+  const musangQty =
+
+    getQuantity(32);
+
+  if (
+
+    musangQty > 0
+
+  ) {
+
+    addProduct(
+
+      32,
+
+      "冰皮榴莲 Musang King",
+
+      musangQty
+
+    );
+
+  }
+
+  // ==========================================================
+
+  // 冰皮月饼
+
+  // ==========================================================
+
+  snowSkinFlavors.forEach(
+
+    function(flavor) {
+
+      const qty =
+
+        Number(
+
+          snowSkinFlavorQty[
+
+            flavor.id
+
+          ]
+
+        ) || 0;
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addProduct(
+
+          flavor.id,
+
+          `${flavor.name} ${flavor.en}`,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  // ==========================================================
+
+  // 肉干及零食
+
+  // ==========================================================
+
+  jerkyProducts.forEach(
+
+    function(product) {
+
+      const qty =
+
+        getQuantity(
+
+          product.id
+
+        );
+
+      if (
+
+        qty > 0
+
+      ) {
+
+        addProduct(
+
+          product.id,
+
+          `${product.name} ${product.en} ${product.spec}`,
+
+          qty
+
+        );
+
+      }
+
+    }
+
+  );
+
+  return products;
+
+}
+  // ============================================================
+
+// 上传付款截图转换 Base64
+
+// ============================================================
+
+function getPaymentImageBase64() {
+
+  return new Promise(
+
+    function(
+
+      resolve,
+
+      reject
+
+    ) {
+
+      const input =
+
+        document.getElementById(
+
+          "paymentImage"
+
+        );
+
+      const file =
+
+        input?.files?.[0];
+
+      if (
+
+        !file
+
+      ) {
+
+        resolve(
+
+          ""
+
+        );
+
+        return;
+
+      }
+
+      const reader =
+
+        new FileReader();
+
+      reader.onload =
+
+        function(event) {
+
+          resolve(
+
+            event.target.result
+
+          );
+
+        };
+
+      reader.onerror =
+
+        function() {
+
+          reject(
+
+            new Error(
+
+              "付款截图读取失败"
+
+            )
+
+          );
+
+        };
+
+      reader.readAsDataURL(
+
+        file
+
+      );
+
+    }
+
+  );
+
+}
+
+// ============================================================
+
+// 检查是否有选择商品
+
+// ============================================================
+
+function hasSelectedProducts() {
+
+  const products =
+
+    buildOrderProducts();
+
+  return (
+
+    products.length > 0
+
+  );
+
+}
+
+// ============================================================
+
+// 生成顾客实际选择的礼盒名称
+
+//
+
+// 只是为了订单显示更清楚。
+
+// 库存仍然按照 products 中每个 ID 扣除。
+
+// ============================================================
+
+function getOrderRemark() {
+
+  let text =
+
+    "";
+
+  const originalRemark =
+
+    document.getElementById(
+
+      "remark"
+
+    )?.value.trim() || "";
+
+  const boxInfo =
+
+    [];
+
+  if (
+
+    getQuantity(33) > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `福满四季 ×${getQuantity(33)}盒`
+
+    );
+
+  }
+
+  if (
+
+    getBoxQuantity("eggYolkPastryBox") > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `蛋黄酥礼盒 ×${getBoxQuantity("eggYolkPastryBox")}盒`
+
+    );
+
+  }
+
+  if (
+
+    getBoxQuantity("twoYolkDriedMeatBox") > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `双黄＆肉干月饼礼盒 ×${getBoxQuantity("twoYolkDriedMeatBox")}盒`
+
+    );
+
+  }
+
+  if (
+
+    traditionalFlakyBoxQty > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `烤皮＆酥皮月饼礼盒 ×${traditionalFlakyBoxQty}盒`
+
+    );
+
+  }
+
+  if (
+
+    getQuantity(32) > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `冰皮猫山王 ×${getQuantity(32)}盒`
+
+    );
+
+  }
+
+  if (
+
+    snowSkinBoxQty > 0
+
+  ) {
+
+    boxInfo.push(
+
+      `冰皮月饼礼盒 ×${snowSkinBoxQty}盒`
+
+    );
+
+  }
+
+  if (
+
+    boxInfo.length > 0
+
+  ) {
+
+    text +=
+
+      "礼盒： " +
+
+      boxInfo.join("；");
+
+  }
+
+  if (
+
+    originalRemark
+
+  ) {
+
+    if (
+
+      text
+
+    ) {
+
+      text +=
+
+        "\n";
+
+    }
+
+    text +=
+
+      "顾客备注： " +
+
+      originalRemark;
+
+  }
+
+  return text;
+
+}
+
+// ============================================================
+
+// 提交订单
+
+// ============================================================
+
 async function submitOrder() {
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let address = document.getElementById("address").value;
-  
-  if (!name || !phone || !address) {
-    alert("请填写完整资料");
+
+  const name =
+
+    document.getElementById(
+
+      "name"
+
+    ).value.trim();
+
+  const phone =
+
+    document.getElementById(
+
+      "phone"
+
+    ).value.trim();
+
+  const delivery =
+
+    document.getElementById(
+
+      "delivery"
+
+    ).value;
+
+  const address =
+
+    document.getElementById(
+
+      "address"
+
+    ).value.trim();
+
+  const paymentInput =
+
+    document.getElementById(
+
+      "paymentImage"
+
+    );
+
+  // ==========================================================
+
+  // 检查顾客资料
+
+  // ==========================================================
+
+  if (
+
+    !name
+
+  ) {
+
+    alert(
+
+      "请填写姓名"
+
+    );
+
     return;
+
   }
-  
-  let file = document.getElementById("payment").files[0];
-  if (!file) {
-    alert("必须上传付款截图");
+
+  if (
+
+    !phone
+
+  ) {
+
+    alert(
+
+      "请填写联络号码"
+
+    );
+
     return;
+
   }
-  if (file.size > 2 * 1024 * 1024) {
-    alert("图片不能超过2MB");
+
+  if (
+
+    !delivery
+
+  ) {
+
+    alert(
+
+      "请选择配送方式"
+
+    );
+
     return;
+
   }
-  
-  let btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-  btn.innerText = "提交中...";
-  
-  // 保存附送信息
-  let giftInfo = calculateFreeGifts();
-  let savedZipCount = giftInfo.zipCount;
-  let savedGiftBagCount = giftInfo.giftBagCount;
-  
-  // 保存订单商品列表
-  let orderProducts = [];
-  
-  rawProducts.forEach((p, i) => {
-    let qty = parseInt(document.getElementById(`raw_${i}`).value) || 0;
-    if (qty > 0) orderProducts.push({ name: p.name, qty: qty, price: p.price });
-  });
-  
-  cookedProducts.forEach((p, i) => {
-    if (p.isFixed) {
-      let qty = parseInt(document.getElementById(`cooked_${i}`).value) || 0;
-      if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
-    } else {
-      let qty500 = parseInt(document.getElementById(`cooked_${i}_500`).value) || 0;
-      let qty1kg = parseInt(document.getElementById(`cooked_${i}_1kg`).value) || 0;
-      if (qty500 > 0) orderProducts.push({ name: `${p.name} 500G`, qty: qty500, price: p.price500 });
-      if (qty1kg > 0) orderProducts.push({ name: `${p.name} 1KG`, qty: qty1kg, price: p.price1kg });
+
+  if (
+
+    !address
+
+  ) {
+
+    alert(
+
+      "请填写地址"
+
+    );
+
+    return;
+
+  }
+
+  // ==========================================================
+
+  // 检查商品
+
+  // ==========================================================
+
+  if (
+
+    !hasSelectedProducts()
+
+  ) {
+
+    alert(
+
+      "请选择至少一件商品"
+
+    );
+
+    return;
+
+  }
+
+  // ==========================================================
+
+  // 检查自选礼盒数量
+
+  // ==========================================================
+
+  const mixedValidation =
+
+    validateMixedBoxes();
+
+  if (
+
+    !mixedValidation.success
+
+  ) {
+
+    alert(
+
+      mixedValidation.message
+
+    );
+
+    return;
+
+  }
+
+  // ==========================================================
+
+  // 检查付款截图
+
+  // ==========================================================
+
+  if (
+
+    !paymentInput.files ||
+
+    paymentInput.files.length === 0
+
+  ) {
+
+    alert(
+
+      "请上传付款截图"
+
+    );
+
+    return;
+
+  }
+
+  // ==========================================================
+
+  // 检查库存
+
+  // ==========================================================
+
+  const stockValidation =
+
+    validateStock();
+
+  if (
+
+    !stockValidation.success
+
+  ) {
+
+    alert(
+
+      stockValidation.message
+
+    );
+
+    return;
+
+  }
+
+  const submitBtn =
+
+    document.getElementById(
+
+      "submitBtn"
+
+    );
+
+  submitBtn.disabled =
+
+    true;
+
+  const originalText =
+
+    submitBtn.textContent;
+
+  submitBtn.textContent =
+
+    "订单提交中...";
+
+  try {
+
+    // ========================================================
+
+    // 再次计算金额
+
+    // ========================================================
+
+    const productTotal =
+
+      getProductTotal();
+
+    const shippingFee =
+
+      getShippingFee();
+
+    const total =
+
+      productTotal +
+
+      shippingFee;
+
+    // ========================================================
+
+    // 付款截图
+
+    // ========================================================
+
+    const paymentImage =
+
+      await getPaymentImageBase64();
+
+    // ========================================================
+
+    // 商品库存资料
+
+    // ========================================================
+
+    const products =
+
+      buildOrderProducts();
+
+    // ========================================================
+
+    // 提交资料
+
+    // ========================================================
+
+    const orderData =
+
+      {
+
+        name:
+
+          name,
+
+        phone:
+
+          phone,
+
+        address:
+
+          address,
+
+        delivery:
+
+          delivery === "pickup"
+
+            ? "自取 Pickup"
+
+            : "邮寄 Shipping",
+
+        products:
+
+          products,
+
+        productTotal:
+
+          productTotal,
+
+        shippingFee:
+
+          shippingFee,
+
+        total:
+
+          total,
+
+        paymentImage:
+
+          paymentImage,
+
+        remark:
+
+          getOrderRemark()
+
+      };
+
+    // ========================================================
+
+    // POST 到 Google Apps Script
+
+    // ========================================================
+
+    const response =
+
+      await fetch(
+
+        API_URL,
+
+        {
+
+          method:
+
+            "POST",
+
+          body:
+
+            JSON.stringify(
+
+              orderData
+
+            )
+
+        }
+
+      );
+
+    const result =
+
+      await response.json();
+
+    if (
+
+      result.status ===
+
+      "success"
+
+    ) {
+
+      alert(
+
+        `订单提交成功！\n\n订单编号：${result.orderId}`
+
+      );
+
+      location.reload();
+
+      return;
+
     }
-  });
-  
-  packagingProducts.forEach((p, i) => {
-    let qty = parseInt(document.getElementById(`pack_${i}`).value) || 0;
-    if (qty > 0) orderProducts.push({ name: `${p.name} (${p.unit})`, qty: qty, price: p.price });
-  });
-  
-  let reader = new FileReader();
-  reader.onload = async function() {
-    try {
-      let res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({
-          name: name,
-          phone: phone,
-          address: address,
-          delivery: document.getElementById("delivery").value,
-          remark: document.getElementById("remark").value,
-          products: orderProducts,
-          productTotal: document.getElementById("productTotal").innerText,
-          shippingFee: document.getElementById("shipping").innerText,
-          total: document.getElementById("total").innerText,
-          paymentImage: reader.result,
-          freeGifts: `Zip袋×${savedZipCount} 礼袋×${savedGiftBagCount}`
-        })
-      });
-      
-      let data = await res.json();
-      
-      if (data.status === "success") {
-        document.body.innerHTML = `<div style="text-align:center;padding:50px;">
-          <h2>🎉 下单成功</h2>
-          <p>订单编号：<b>${data.orderId}</b></p >
-          <p>我们会尽快处理您的订单</p >
-          <p>请保留付款截图以备查询</p >
-          <hr>
-          <p style="color:#8B0000;">🎁 ${savedZipCount > 0 ? `附送 Zip袋×${savedZipCount} 礼袋×${savedGiftBagCount}` : "感谢您的订购"}</p >
-        </div>`;
-      } else {
-        alert("提交失败：" + (data.message || "未知错误"));
-        btn.disabled = false;
-        btn.innerText = "提交订单";
-      }
-    } catch (err) {
-      alert("网络错误：" + err.message);
-      btn.disabled = false;
-      btn.innerText = "提交订单";
-    }
-  };
-  
-  reader.onerror = function() {
-    alert("读取图片失败");
-    btn.disabled = false;
-    btn.innerText = "提交订单";
-  };
-  
-  reader.readAsDataURL(file);
+
+    throw new Error(
+
+      result.message ||
+
+      "订单提交失败"
+
+    );
+
+  } catch (
+
+    error
+
+  ) {
+
+    console.error(
+
+      error
+
+    );
+
+    alert(
+
+      "订单提交失败：" +
+
+      error.message
+
+    );
+
+  } finally {
+
+    submitBtn.disabled =
+
+      false;
+
+    submitBtn.textContent =
+
+      originalText;
+
+  }
+
 }
 
-// ========== 初始化 ==========
-document.getElementById("submitBtn").onclick = submitOrder;
-renderRawProducts();
-renderCookedProducts();
-renderPackagingProducts();
-calc();
+// ============================================================
+
+// 页面启动时显示初始金额
+
+// ============================================================
+
+calculateAll();
+
 </script>
+
 </body>
+
 </html>
