@@ -89,6 +89,112 @@ button:disabled {
 }
 
   /* ============================================================
+   单卖月饼
+   ============================================================ */
+
+.single-mooncake-section {
+  margin-top: 25px;
+}
+
+
+.single-mooncake-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+
+.single-mooncake-subtitle {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+
+.single-mooncake-category {
+  font-size: 17px;
+  font-weight: 700;
+
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+
+.single-mooncake-item {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+
+.single-mooncake-info {
+  flex: 1;
+}
+
+
+.single-mooncake-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+.single-mooncake-en {
+  font-size: 13px;
+  color: #777;
+
+  margin-top: 2px;
+}
+
+
+.single-mooncake-price {
+  font-size: 14px;
+  font-weight: 600;
+
+  margin-top: 5px;
+}
+
+
+.single-mooncake-control {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.single-mooncake-control button {
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+
+.single-mooncake-control span {
+  min-width: 25px;
+
+  text-align: center;
+
+  font-size: 16px;
+
+  font-weight: 600;
+}
+  
+  /* ============================================================
 付款资料
 ============================================================ */
 
@@ -1196,6 +1302,24 @@ button:disabled {
 
     >
 
+      <!-- ============================================================
+     单卖月饼
+     ============================================================ -->
+
+<section class="single-mooncake-section">
+
+  <div class="single-mooncake-title">
+    单卖月饼
+  </div>
+
+  <div class="single-mooncake-subtitle">
+    可随意自选 · 数量不限
+  </div>
+
+  <div id="singleMooncakeList"></div>
+
+</section>
+
       商品加载中...
 
     </div>
@@ -2107,6 +2231,169 @@ const snowSkinFlavors = [
 
 ];
 
+  // ============================================================
+// 单卖月饼
+// 可随意自选，数量不限
+// 共用 Inventory ID 14 - 28
+// ============================================================
+
+const singleMooncakeProducts = [
+
+  // ------------------------
+  // 烤皮月饼
+  // ------------------------
+
+  {
+    id: 14,
+    name: "金翡翠",
+    en: "Pandan Golden",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 15,
+    name: "纯莲蓉",
+    en: "Pure Lotus",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 16,
+    name: "玫瑰豆沙",
+    en: "Rose Red Bean",
+    price: 12.65,
+    type: "singleMooncake"
+  },
+
+
+  // ------------------------
+  // 酥皮月饼
+  // ------------------------
+
+  {
+    id: 17,
+    name: "竹炭黑芝麻",
+    en: "Black Sesame",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 18,
+    name: "紫香芋莲蓉",
+    en: "Yam Lotus",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 19,
+    name: "金巧苏香月",
+    en: "Tiramisu",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 20,
+    name: "茉香乌龙茶",
+    en: "Jasmine Oolong Tea",
+    price: 14.95,
+    type: "singleMooncake"
+  },
+
+
+  // ------------------------
+  // 双黄＆肉干月饼
+  // ------------------------
+
+  {
+    id: 21,
+    name: "双黄金翡翠",
+    en: "2 Yolk Pandan Golden",
+    price: 17.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 22,
+    name: "双黄白莲蓉",
+    en: "2 Yolk White Lotus",
+    price: 17.95,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 23,
+    name: "白莲肉干肉松",
+    en: "Lotus Dried Meat Pork Floss",
+    price: 22.45,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 24,
+    name: "翡翠肉干瓜子",
+    en: "Pandan Dried Meat",
+    price: 22.45,
+    type: "singleMooncake"
+  },
+
+
+  // ------------------------
+  // 冰皮月饼
+  // ------------------------
+
+  {
+    id: 25,
+    name: "养生黑芝麻",
+    en: "Black Sesame",
+    price: 16.45,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 26,
+    name: "金翡翠麻薯",
+    en: "Pandan Golden Mochi",
+    price: 16.45,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 27,
+    name: "茉莉乌龙茶",
+    en: "Jasmine Oolong Tea",
+    price: 16.45,
+    type: "singleMooncake"
+  },
+
+  {
+    id: 28,
+    name: "芋头纯莲蓉",
+    en: "Yam Pure Lotus",
+    price: 16.45,
+    type: "singleMooncake"
+  }
+
+];
+
+  // ============================================================
+// 单卖月饼数量
+// ============================================================
+
+const singleMooncakeQty = {};
+
+singleMooncakeProducts.forEach(
+  function(product) {
+
+    singleMooncakeQty[product.id] = 0;
+
+  }
+);
+  
 // ============================================================
 
 // 肉干及零食产品
@@ -2732,6 +3019,37 @@ function changeQuantity(
 
 }
 
+  // ============================================================
+// 修改单卖月饼数量
+// 数量不限
+// ============================================================
+
+function changeSingleMooncakeQty(
+  id,
+  change
+) {
+
+  const currentQty =
+    Number(
+      singleMooncakeQty[id]
+    ) || 0;
+
+  let newQty =
+    currentQty +
+    Number(change);
+
+  if (newQty < 0) {
+    newQty = 0;
+  }
+
+  singleMooncakeQty[id] =
+    newQty;
+
+  renderSingleMooncakes();
+
+  calculateAll();
+
+} 
 // ============================================================
 
 // 渲染普通商品
@@ -2906,6 +3224,168 @@ function renderNormalProduct(
 
 }
 
+  // ============================================================
+// 渲染单卖月饼
+// ============================================================
+
+function renderSingleMooncakes() {
+
+  const container =
+    document.getElementById(
+      "singleMooncakeList"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  let html = "";
+
+  let currentCategory = "";
+
+
+  singleMooncakeProducts.forEach(
+    function(product) {
+
+      let category = "";
+
+
+      // 烤皮
+      if (
+        product.id >= 14 &&
+        product.id <= 16
+      ) {
+
+        category =
+          "烤皮月饼";
+
+      }
+
+
+      // 酥皮
+      else if (
+        product.id >= 17 &&
+        product.id <= 20
+      ) {
+
+        category =
+          "酥皮月饼";
+
+      }
+
+
+      // 双黄＆肉干
+      else if (
+        product.id >= 21 &&
+        product.id <= 24
+      ) {
+
+        category =
+          "双黄＆肉干月饼";
+
+      }
+
+
+      // 冰皮
+      else if (
+        product.id >= 25 &&
+        product.id <= 28
+      ) {
+
+        category =
+          "冰皮月饼";
+
+      }
+
+
+      // 分类标题
+      if (
+        category !== currentCategory
+      ) {
+
+        html += `
+          <div class="single-mooncake-category">
+            ${category}
+          </div>
+        `;
+
+        currentCategory =
+          category;
+      }
+
+
+      const qty =
+        Number(
+          singleMooncakeQty[
+            product.id
+          ]
+        ) || 0;
+
+
+      html += `
+        <div class="single-mooncake-item">
+
+          <div class="single-mooncake-info">
+
+            <div class="single-mooncake-name">
+              ${product.name}
+            </div>
+
+            <div class="single-mooncake-en">
+              ${product.en}
+            </div>
+
+            <div class="single-mooncake-price">
+              RM${product.price.toFixed(2)}
+            </div>
+
+          </div>
+
+
+          <div class="single-mooncake-control">
+
+            <button
+              type="button"
+              onclick="
+                changeSingleMooncakeQty(
+                  ${product.id},
+                  -1
+                )
+              "
+            >
+              −
+            </button>
+
+            <span>
+              ${qty}
+            </span>
+
+            <button
+              type="button"
+              onclick="
+                changeSingleMooncakeQty(
+                  ${product.id},
+                  1
+                )
+              "
+            >
+              ＋
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }
+  );
+
+
+  container.innerHTML =
+    html;
+
+}
+  
 // ============================================================
 
 // 获取固定礼盒数量
@@ -4787,6 +5267,12 @@ function renderMidAutumnProducts() {
 
     html;
 
+  // ==========================================================
+  // 渲染单卖月饼
+  // ==========================================================
+
+  renderSingleMooncakes();
+  
 }
 
 // ============================================================
@@ -4919,7 +5405,37 @@ function getNormalProductTotal() {
 
 }
 
+// ============================================================
+// 计算单卖月饼金额
+// ============================================================
 
+function getSingleMooncakeTotal() {
+
+  let total = 0;
+
+
+  singleMooncakeProducts.forEach(
+    function(product) {
+
+      const qty =
+        Number(
+          singleMooncakeQty[
+            product.id
+          ]
+        ) || 0;
+
+
+      total +=
+        qty *
+        product.price;
+
+    }
+  );
+
+
+  return total;
+
+}
 
 
 
@@ -5091,6 +5607,10 @@ function getProductTotal() {
 
     getSnowSkinTotal();
 
+  total +=
+    
+    getSingleMooncakeTotal();
+  
   return total;
 
 }
@@ -5115,7 +5635,7 @@ function getProductTotal() {
 
 // ============================================================
 
-function getShippingItemCount() {
+
 
   let count =
 
@@ -5150,6 +5670,26 @@ function getShippingItemCount() {
     }
 
   );
+
+  // ==========================================================
+// 单卖月饼
+// 每一粒单卖月饼都算作 1 件商品
+// ==========================================================
+
+singleMooncakeProducts.forEach(
+  function(product) {
+
+    const qty =
+      Number(
+        singleMooncakeQty[
+          product.id
+        ]
+      ) || 0;
+
+    count += qty;
+
+  }
+);
 
   // ------------------------
 
@@ -5854,6 +6394,35 @@ function getRequiredStock() {
 
   );
 
+  // ==========================================================
+// 单卖月饼
+// 共用 Inventory ID 14 - 28
+// 顾客购买多少粒，就扣多少库存
+// ==========================================================
+
+singleMooncakeProducts.forEach(
+  function(product) {
+
+    const qty =
+      Number(
+        singleMooncakeQty[
+          product.id
+        ]
+      ) || 0;
+
+
+    if (qty > 0) {
+
+      addStock(
+        product.id,
+        qty
+      );
+
+    }
+
+  }
+);
+  
   return required;
 
 }
@@ -6284,6 +6853,35 @@ function buildOrderProducts() {
 
   );
 
+  // ==========================================================
+// 单卖月饼
+// 共用 Inventory ID 14 - 28
+// 顾客购买多少粒，就扣多少库存
+// ==========================================================
+
+singleMooncakeProducts.forEach(
+  function(product) {
+
+    const qty =
+      Number(
+        singleMooncakeQty[
+          product.id
+        ]
+      ) || 0;
+
+
+    if (qty > 0) {
+
+      addStock(
+        product.id,
+        qty
+      );
+
+    }
+
+  }
+);
+  
   return products;
 
 }
