@@ -6394,10 +6394,10 @@ function getRequiredStock() {
 
   );
 
-  // ==========================================================
+ // ==========================================================
 // 单卖月饼
 // 共用 Inventory ID 14 - 28
-// 顾客购买多少粒，就扣多少库存
+// 顾客购买多少粒，就提交多少数量
 // ==========================================================
 
 singleMooncakeProducts.forEach(
@@ -6410,11 +6410,11 @@ singleMooncakeProducts.forEach(
         ]
       ) || 0;
 
-
     if (qty > 0) {
 
-      addStock(
+      addProduct(
         product.id,
+        `${product.name} ${product.en}`,
         qty
       );
 
