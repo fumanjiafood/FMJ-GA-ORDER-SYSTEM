@@ -2690,13 +2690,9 @@ async function loadStock(id) {
 }
 
 // ============================================================
-
 // 一次加载全部 Inventory 库存
-
 //
-
 // Inventory ID：1 - 33
-
 // ============================================================
 
 async function loadAllStocks() {
@@ -2709,11 +2705,43 @@ async function loadAllStocks() {
     id++
   ) {
 
-    stockIds.push(
-      id
-    );
+    stockIds.push(id);
 
   }
+
+  // ==========================================================
+  // 先显示商品
+  // 不等待库存
+  // ==========================================================
+
+  renderAllProducts();
+
+  calculateAll();
+
+  // ==========================================================
+  // 后台加载全部库存
+  // ==========================================================
+
+  await Promise.all(
+    stockIds.map(
+      function(id) {
+
+        return loadStock(id);
+
+      }
+    )
+  );
+
+  // ==========================================================
+  // 库存全部加载完成
+  // 再重新渲染
+  // ==========================================================
+
+  renderAllProducts();
+
+  calculateAll();
+
+}
 
 
   // ==========================================================
@@ -2755,99 +2783,68 @@ async function loadAllStocks() {
 }
 
 // ============================================================
-
 // 获取库存
-
 // ============================================================
 
 function getStock(id) {
 
   if (
-
-    stocks[id] === undefined
-
+    stocks[id] === undefined ||
+    stocks[id] === null
   ) {
 
     return null;
 
   }
 
-  return Number(
+  const stock =
+    Number(stocks[id]);
 
-    stocks[id]
+  if (
+    Number.isNaN(stock)
+  ) {
 
-  ) || 0;
+    return null;
+
+  }
+
+  return stock;
 
 }
-
+  
 // ============================================================
-
 // 库存文字
-
 // ============================================================
 
 function getStockHTML(id) {
 
   const stock =
-
     getStock(id);
 
-  if (
-
-    stock === null
-
-  ) {
+  if (stock === null) {
 
     return `
-
-      <div
-
-        class="stock-text stock-loading"
-
-      >
-
+      <div class="stock-text stock-loading">
         库存加载中...
-
       </div>
-
     `;
 
   }
 
-  if (
-
-    stock <= 0
-
-  ) {
+  if (stock <= 0) {
 
     return `
-
-      <div
-
-        class="stock-text stock-low"
-
-      >
-
+      <div class="stock-text stock-low">
         库存不足
-
       </div>
-
     `;
 
   }
 
   return `
-
-    <div
-
-      class="stock-text stock-ok"
-
-    >
-
+    <div class="stock-text stock-ok">
       现有库存：${stock}
-
     </div>
-
   `;
 
 }
@@ -5341,8 +5338,6 @@ function renderJerkyProducts() {
 function renderAllProducts() {
 
   renderMidAutumnProducts();
-
-  renderSingelMooncakes();
 
   renderJerkyProducts();
 
