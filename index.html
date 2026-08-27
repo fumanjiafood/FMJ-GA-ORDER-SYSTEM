@@ -5342,6 +5342,8 @@ function renderAllProducts() {
 
   renderMidAutumnProducts();
 
+  renderSingelMooncakes();
+
   renderJerkyProducts();
 
 }
@@ -5642,12 +5644,13 @@ function getProductTotal() {
 
 // 都算作一件商品。
 
+// 单卖月饼每一粒也算作 1 件商品。
+
 // ============================================================
 
-
+function getShippingItemCount() {
 
   let count =
-
     0;
 
   // ------------------------
@@ -5680,25 +5683,35 @@ function getProductTotal() {
 
   );
 
-  // ==========================================================
-// 单卖月饼
-// 每一粒单卖月饼都算作 1 件商品
-// ==========================================================
+  // ------------------------
 
-singleMooncakeProducts.forEach(
-  function(product) {
+  // 单卖月饼
 
-    const qty =
-      Number(
-        singleMooncakeQty[
-          product.id
-        ]
-      ) || 0;
+  // 每一粒算作 1 件商品
 
-    count += qty;
+  // ------------------------
 
-  }
-);
+  singleMooncakeProducts.forEach(
+
+    function(product) {
+
+      const qty =
+
+        Number(
+
+          singleMooncakeQty[
+            product.id
+          ]
+
+        ) || 0;
+
+      count +=
+
+        qty;
+
+    }
+
+  );
 
   // ------------------------
 
@@ -5773,6 +5786,7 @@ singleMooncakeProducts.forEach(
   return count;
 
 }
+
 
 // ============================================================
 
@@ -5855,7 +5869,6 @@ function getShippingFee() {
   );
 
 }
-
 
 
 // ============================================================
