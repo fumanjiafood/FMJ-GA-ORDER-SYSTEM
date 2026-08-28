@@ -6287,96 +6287,64 @@ function buildOrderProducts() {
   return products;
 
 }
-  // ============================================================
-
-// 上传付款截图转换 Base64
-
-// ============================================================
-
-function getPaymentImageBase64() {
+ function getPaymentImageBase64() {
 
   return new Promise(
+    function(resolve, reject) {
 
-    function(
-
-      resolve,
-
-      reject
-
-    ) {
-
-      const input =
-
-        document.getElementById(
-
-          "paymentImage"
-
-        );
-
-      const file =
-
-        input?.files?.[0];
+      const paymentInput =
+        document.getElementById("payment");
 
       if (
-
-        !file
-
+        !paymentInput ||
+        !paymentInput.files ||
+        paymentInput.files.length === 0
       ) {
 
-        resolve(
-
-          ""
-
+        reject(
+          new Error(
+            "没有选择付款截图"
+          )
         );
 
         return;
 
       }
 
-      const reader =
+      const file =
+        paymentInput.files[0];
 
+      const reader =
         new FileReader();
 
       reader.onload =
-
         function(event) {
 
           resolve(
-
             event.target.result
-
           );
 
         };
 
       reader.onerror =
-
         function() {
 
           reject(
-
             new Error(
-
               "付款截图读取失败"
-
             )
-
           );
 
         };
 
       reader.readAsDataURL(
-
         file
-
       );
 
     }
-
   );
 
 }
-
 // ============================================================
 
 // 检查是否有选择商品
